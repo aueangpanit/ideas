@@ -1,12 +1,58 @@
-module.exports = function(app, passport) {
+module.exports = function(app, passport, request) {
     
         // =====================================
         // HOME PAGE (with login links) ========
         // =====================================
         app.get('/', function(req, res) {
-            res.render('index.ejs'); // load the index.ejs file
+            var options = { method: 'GET',
+              url: 'https://api.themoviedb.org/3/search/multi',
+              qs: 
+               { include_adult: 'false',
+                 page: '1',
+                 query: 'new game',
+                 language: 'en-US',
+                 api_key: 'f5d33aa7f0ee6bdeae50b823541435cc' },
+              body: '{}' };
+            
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+                body = JSON.parse(body);
+              //console.log(body);
+              res.render('index.ejs', { 
+                    body: {
+                        total_results: body.total_results,
+                        results: body.results
+                    }
+                });
+            });
         });
     
+        // =====================================
+        // SEARCH ==============================
+        // =====================================
+        app.post('/search', function(req, res) {
+            var search = req.body.search;
+
+            var options = { method: 'GET',
+            url: 'https://api.themoviedb.org/3/search/multi',
+            qs: 
+            { include_adult: 'false',
+               page: '1',
+               query: search,
+               language: 'en-US',
+               api_key: 'f5d33aa7f0ee6bdeae50b823541435cc' },
+            body: '{}' };
+          
+            request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+              body = JSON.parse(body);
+            res.render('search.ejs', {
+                    total_results: body.total_results,
+                    results: body.results                 
+                });
+            });
+        });
+
         // =====================================
         // LOGIN ===============================
         // =====================================
