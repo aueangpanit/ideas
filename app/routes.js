@@ -30,15 +30,19 @@ module.exports = function(app, passport, request) {
         // =====================================
         // SEARCH ==============================
         // =====================================
-        app.post('/search', function(req, res) {
-            var search = req.body.search;
+        app.get('/search', function(req, res) {
+            var query = req.query.q;
+            var page = 1;
+            if(req.query.p != null) {
+                page = req.query.p;
+            }
 
             var options = { method: 'GET',
             url: 'https://api.themoviedb.org/3/search/multi',
             qs: 
             { include_adult: 'false',
-               page: '1',
-               query: search,
+               page: page,
+               query: query,
                language: 'en-US',
                api_key: 'f5d33aa7f0ee6bdeae50b823541435cc' },
             body: '{}' };
@@ -47,6 +51,9 @@ module.exports = function(app, passport, request) {
             if (error) throw new Error(error);
               body = JSON.parse(body);
             res.render('search.ejs', {
+                    q: query,
+                    page: page,
+                    total_pages: body.total_pages,
                     total_results: body.total_results,
                     results: body.results                 
                 });
