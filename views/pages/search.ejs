@@ -4,6 +4,13 @@
 <head>
     <title>LISiT</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .line-limit {
+            height: 8em; /* that's one line, 2em for 2 lines, etc...*/
+            line-height: 1.2em; /* the height of one text line */
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 <!--nav bar-->
@@ -12,38 +19,42 @@
 <!--results-->
 <ul class="list-unstyled">
     <% for(var i = 0; i < results.length; i++) { %>
-        <% var posterPath; %>
-        <% var name; %>
-        <% var mediaType; %>
+        <% var posterPath;
+        var name;
+        var mediaType; 
+        var overview;%>
         <% switch(results[i].media_type) {
         case "tv":
             posterPath = results[i].poster_path;
             name = results[i].name;
             mediaType = "tv";
+            overview = results[i].overview;
             break;
         case "movie":
             posterPath = results[i].poster_path;
             name = results[i].title;
             mediaType = "movie";
+            overview = results[i].overview;
             break;
         case "person":
             posterPath = results[i].profile_path;
             name = results[i].name;
             mediaType = "person";
+            overview = "";
             break;
         default:
         } %>
-        <% if(posterPath == null) { 
+        <% if(posterPath == null) { // check if poster is null
             posterPath = "http://epaper2.mid-day.com/images/no_image_thumb.gif"; 
         } else {
             posterPath = "http://image.tmdb.org/t/p/w92/" + posterPath;
         } %>
         <li class="media">
-            <img class="mr-3" src="<%= posterPath %>" alt="" width="92">
-            <div class="media-body">
-            <h5 class="mt-0 mb-1"><%= name %></h5>
+            <img class="mr-3" src="<%= posterPath %>" alt="" width="92" height="138" style="object-fit: cover">
+            <div class="media-body line-limit">
+            <h5 class="mt-2 mb-0"><%= name %></h5>
             <p><%= mediaType %></p>
-            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+            <p><%= overview %></p>
             </div>
         </li>
         
@@ -51,7 +62,7 @@
 </ul>
 
 <!--total_results-->
-<p>Total results: <%= total_results %></p>
+<p class="ml-2">Total results: <%= total_results %></p>
 
 <!--pagination-->
 <nav aria-label="Page navigation">
