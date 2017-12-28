@@ -1,0 +1,224 @@
+<!-- views/index.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>LISiT</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .readmore {
+            /*height: 15em !important; /* that's one line, 2em for 2 lines, etc...*/
+            /*line-height: 1.2em; /* the height of one text line */
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<!--nav bar-->
+<% include ../partials/nav_bar %>
+
+<!--breadcrumb-->
+<nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb mb-0" style="border-radius: 0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Library</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+</nav>
+
+<div class="container-fluid mb-3">
+<div class="row">
+    <div class="col-2 pl-0 pr-0">
+        <% var posterPath = poster_path; %>
+        <% if(posterPath == null) { // check if poster is null
+            posterPath = "http://epaper2.mid-day.com/images/no_image_thumb.gif"; 
+        } else {
+            posterPath = "http://image.tmdb.org/t/p/w342/" + posterPath;
+        } %>
+        <img class="" src="<%= posterPath %>" alt="" style="width: 100%">
+        <div class="pl-2 mt-3 mr-2">
+            <h5>Alternative Titles</h5>
+            <b>Title:</b> <%= title %><br />
+            <b>Original Title:</b> <span id="original-title"></span><br />
+            <br />
+            <h5>Information</h5>
+            <b>Type:</b> <%= media_type %><br />
+            <b>Status:</b> <span id="status"></span><br />
+            <b>Release Date:</b> <span id="release-date"></span><br />
+            <b>Production Companies:</b> <span id="production-companies"></span><br />
+            <b>Genres:</b> <span id="genres"></span><br />
+            <b>Duration:</b> <span id="duration"></span><br />
+            <b>Rating:</b> <span id="rating"></span>
+        </div>
+    </div>
+    <div class="col-10 mt-2 pr-0">
+        <div class="mr-3">
+            <h3 class="mt-0"><%= title %> <span id="year"></span></h3>
+            <h4>Score: <span id="score"></span> | Vote Count: <span id="vote-count"></span></h4>
+            <h5>Synopsis</h5>
+            <span id="synopsis" style="white-space: pre-line"></span>
+            <hr>
+            <h5>Collection</h5>
+            <p id="collection"></p>
+            <hr>
+            <h5>Cast & Crew</h5>
+            <div id="credits" class="row">
+
+            </div>
+            <hr>
+            <h5 id="reviews">Reviews</h5>
+            
+            
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!--read more-->
+<script src="js/readmore.min.js"></script>
+
+<!--getMonth-->
+<script src="js/getMonth.js"></script>
+
+<script>
+// get detials
+var detailsSettings = {
+    "async": true,
+    "crossDomain": false,
+    "url": "/movie/details?id=" + <%=id%>,
+    "method": "GET",
+    "headers": {},
+    "data": "{}"
+}
+$.ajax(detailsSettings).done(function (response) {
+    var details = response.details;
+    // Main
+    $('#year').html("(" + details.release_date.substring(0, 4) + ")"); // year
+    $('#score').html(details.vote_average); // score
+    $('#vote-count').html(details.vote_count); // vote count
+    $('#synopsis').html(details.overview); // synopsis
+    var collection; // collection
+    if(details.belongs_to_collection != null) {
+        collection = details.belongs_to_collection.name;
+    } else {
+        collection = "None";
+    }
+    $('#collection').html(collection);
+
+    // Details (side bar)
+    $('#original-title').html(details.original_title); // original title
+    $('#status').html(details.status); // status
+    var dateInfo = details.release_date.split("-"); // release date
+    var year = dateInfo[0];
+    var month = getMonth(dateInfo[1]);
+    var day = dateInfo[2];
+    $('#release-date').html(month + " " + day + ", " + year);
+    var productionCompanies = ""; // production companies
+    for(var i = 0; i < details.production_companies.length; i++) { %>
+        productionCompanies += details.production_companies[i].name + ", ";
+    }
+    $('#production-companies').html(productionCompanies);
+    var genres = ""; // genres
+    for(var i = 0; i < details.genres.length; i++) {
+        genres += details.genres[i].name + ", ";
+    }
+    $('#genres').html(genres);
+    var duration = ""; // duration
+    var hour = 0;
+    var min = details.runtime;
+    while(min >= 60) {
+        hour++;
+        min -= 60;
+    }
+    if(hour == 0) {
+        duration = min + "m";
+    } else {
+        duration = hour + "h " + min + "m";
+    }
+    $('#duration').html(duration);
+});
+
+// get certificate
+var certificationSettings = {
+    "async": true,
+    "crossDomain": false,
+    "url": "/movie/certification?id=" + <%=id%>,
+    "method": "GET",
+    "headers": {},
+    "data": "{}"
+}
+$.ajax(certificationSettings).done(function (response) {
+    var certification = response.certification;
+    $('#rating').html(certification);
+});
+
+// get credits
+var creditsSettings = {
+    "async": true,
+    "crossDomain": false,
+    "url": "/movie/credits?id=" + <%=id%>,
+    "method": "GET",
+    "headers": {},
+    "data": "{}"
+}
+$.ajax(creditsSettings).done(function (response) {
+    var credits = response.credits;
+    
+    var creditsHtml = "";
+    for (var i = 0; i < credits.length; i++) {
+        var profilePath = credits[i].profile_path;
+        if(profilePath == null) { // check if poster is null
+            profilePath = "http://epaper2.mid-day.com/images/no_image_thumb.gif"; 
+        } else {
+            profilePath = "http://image.tmdb.org/t/p/w92/" + profilePath;
+        }
+
+        creditsHtml += '<div class="col-3 mb-1">' + 
+                            '<div class="media">' + 
+                                '<img class="mr-3" src="' + profilePath + '" alt="" width="70" height="105" style="object-fit: cover">' +
+                                '<div class="media-body">' + 
+                                '<h6 class="mt-0">' + credits[i].name + '</h6>' + 
+                                credits[i].character +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+    }
+    $('#credits').html(creditsHtml);
+});
+
+// get reviews
+var reviewsSettings = {
+    "async": true,
+    "crossDomain": false,
+    "url": "/movie/reviews?id=" + <%=id%>,
+    "method": "GET",
+    "headers": {},
+    "data": "{}"
+}
+$.ajax(reviewsSettings).done(function (response) {
+    var reviews = response.reviews;
+
+    var reviewsHtml = "";
+    var maxNumReview = 2;
+    if (reviews.length < maxNumReview) {
+        maxNumReview = reviews.length;
+    }
+    for (var i = 0; i < maxNumReview; i++) {
+        reviewsHtml += '<div class="card mb-1">' +
+                            '<div class="card-body">' +
+                                '<h5>A review by ' + reviews[i].author + '</h5>' +
+                                '<div class="readmore"><span style="white-space: pre-line">' + reviews[i].content + '</span></div>' +
+                            '</div>' +
+                        '</div>';
+    }
+    $('#reviews').after(reviewsHtml);
+    $('.readmore').readmore();
+});
+</script>
+
+</body>
+</html>

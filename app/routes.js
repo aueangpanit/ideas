@@ -1,5 +1,6 @@
 module.exports = function(app, passport, request) {
-        var apiKey = 'f5d33aa7f0ee6bdeae50b823541435cc';
+        const apiKey = 'f5d33aa7f0ee6bdeae50b823541435cc';
+        const url = require('url'); 
     
         // =====================================
         // HOME PAGE (with login links) ========
@@ -49,85 +50,117 @@ module.exports = function(app, passport, request) {
         // INFO ================================
         // =====================================
         app.get('/info', function(req, res) {
-            
-
             var id = req.query.id;
             var mediaType = req.query.mt;
+            var posterPath = req.query.pp;
 
-            var options = { 
-                method: 'GET',
-                url: 'https://api.themoviedb.org/3/movie/' + id,
-                qs: { 
-                    language: 'en-US',
-                    api_key: apiKey 
-                },
-                body: '{}' 
-            };
+            res.redirect(url.format({
+                pathname:"/" + mediaType,
+                query: {
+                   "id": req.query.id,
+                   "mt": req.query.mt,
+                   "pp": req.query.pp,
+                   "t": req.query.t
+                }
+            }));
+        });
+
+        // movie
+        app.get('/movie', function(req, res) {
+            res.render('pages/movie.ejs', {
+                id: req.query.id,
+                media_type: req.query.mt,
+                poster_path: req.query.pp,
+                title: req.query.t
+            });
+        });
+        // movie - details
+        app.get('/movie/details', function(req, res) {
+            var options = { method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/' + req.query.id,
+            qs: 
+                { language: 'en-US',
+                api_key: apiKey },
+            body: '{}' };
             
             request(options, function (error, response, body) {
                 if (error) throw new Error(error);
                 
-                var info = JSON.parse(body);
-
-                options = { method: 'GET',
-                url: 'https://api.themoviedb.org/3/movie/' + id + '/release_dates',
-                qs: { api_key: apiKey },
-                body: '{}' };
-                
-                request(options, function (error, response, body) {
-                    if (error) throw new Error(error);
-                
-                    body = JSON.parse(body);
-                    var certification = body.results[0].release_dates[0].certification;
-
-                    options = { method: 'GET',
-                    url: 'https://api.themoviedb.org/3/movie/' + id + '/credits',
-                    qs: { api_key: apiKey },
-                    body: '{}' };
-                    
-                    request(options, function (error, response, body) {
-                        if (error) throw new Error(error);
-                    
-                        body = JSON.parse(body);
-                        var cast;
-                        var maxCast = 8;
-                        if (body.cast.length > maxCast) {
-                            cast = new Array(maxCast);
-                            for (var i = 0; i < maxCast; i++) {
-                                cast[i] = body.cast[i];
-                            }
-                        }
-                        else {
-                            cast = body.cast;
-                        }
-
-                        options = { method: 'GET',
-                        url: 'https://api.themoviedb.org/3/movie/' + id + '/reviews',
-                        qs: 
-                         { page: '1',
-                           language: 'en-US',
-                           api_key: apiKey },
-                        body: '{}' };
-                      
-                        request(options, function (error, response, body) {
-                            if (error) throw new Error(error);
-                        
-                            body = JSON.parse(body);
-                            var reviews = body.results;
-
-                            res.render('pages/info.ejs', {
-                                info: info,
-                                media_type: mediaType,
-                                certification: certification,
-                                cast: cast,
-                                reviews: reviews
-                            });
-                        });
-
-
-                    });
+                res.json({
+                    details: JSON.parse(body)
                 });
             });
+
+        });
+        // movie - certification
+        app.get('/movie/certification', function(req, res) {
+            options = { method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/' + req.query.id + '/release_dates',
+            qs: { api_key: apiKey },
+            body: '{}' };
+            
+            request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+            
+                body = JSON.parse(body);
+                var certification = body.results[0].release_dates[0].certification;
+
+                res.json({
+                    certification: certification
+                });
+            });
+        });
+        //movie - credits
+        app.get('/movie/credits', function(req, res) {
+            var options = { method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/' + req.query.id + '/credits',
+            qs: { api_key: apiKey },
+            body: '{}' };
+            
+            request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+            
+                body = JSON.parse(body);
+                var cast;
+                var maxCast = 8;
+                if (body.cast.length > maxCast) {
+                    cast = new Array(maxCast);
+                    for (var i = 0; i < maxCast; i++) {
+                        cast[i] = body.cast[i];
+                    }
+                }
+                else {
+                    cast = body.cast;
+                }
+                res.json({
+                    credits: cast
+                });
+            });
+        });
+        //movie - reviews
+        app.get('/movie/reviews', function(req, res) {
+            var options = { method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/' + req.query.id + '/reviews',
+            qs: 
+             { page: '1',
+               language: 'en-US',
+               api_key: apiKey },
+            body: '{}' };
+          
+            request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+            
+                body = JSON.parse(body);
+                var reviews = body.results;
+
+                res.json({
+                    reviews: reviews
+                });
+            });
+        });
+        // movie - recommendations
+        app.get('/movie/recommendations', function(req, res) {
+            
         });
 
         // =====================================
