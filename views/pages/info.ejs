@@ -1,0 +1,175 @@
+<!-- views/index.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>LISiT</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .readmore {
+            /*height: 15em !important; /* that's one line, 2em for 2 lines, etc...*/
+            /*line-height: 1.2em; /* the height of one text line */
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<!--nav bar-->
+<% include ../partials/nav_bar %>
+
+<!--breadcrumb-->
+<nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb mb-0" style="border-radius: 0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Library</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+</nav>
+
+<div class="container-fluid mb-3">
+<div class="row">
+    <div class="col-2 pl-0 pr-0">
+        <img class="" src="http://image.tmdb.org/t/p/w342/<%= info.poster_path %>" alt="" style="width: 100%">
+        <div class="pl-2 mt-3 mr-2">
+            <h5>Alternative Titles</h5>
+            <b>Title:</b> <%= info.title %><br />
+            <b>Original Title:</b> <%= info.original_title %><br /><br />
+            <h5>Information</h5>
+            <b>Type:</b> <%= media_type %><br />
+            <b>Status:</b> <%= info.status %><br />
+            <% var dateInfo = info.release_date.split("-");
+            var year = dateInfo[0];
+            var month = dateInfo[1];
+            switch (parseInt(month)){
+                case 1:
+                    month = "Jan";
+                    break;
+                case 2:
+                    month = "Feb";
+                    break;
+                case 3:
+                    month = "Mar";
+                    break;
+                case 4:
+                    month = "Apr";
+                    break;
+                case 5: 
+                    month = "May";
+                    break;
+                case 6:
+                    month = "Jun";
+                    break;
+                case 7:
+                    month = "Jul";
+                    break;
+                case 8:
+                    month = "Aug";
+                    break;
+                case 9:
+                    month = "Sep";
+                    break;
+                case 10:
+                    month = "Oct";
+                    break;
+                case 11:
+                    month = "Nov";
+                    break;
+                case 12:
+                    month = "Dec";
+                    break;
+                default:
+                    month = "";
+            }
+            var day = dateInfo[2]; %>
+            <b>Release Date:</b> <%= month %> <%= day %>, <%= year %><br />
+            <b>Production Companies:</b>
+            <% for(var i = 0; i < info.production_companies.length; i++) { %>
+                <%= info.production_companies[i].name %>, 
+            <% } %>
+            <br />
+            <b>Genres:</b>
+            <% for(var i = 0; i < info.genres.length; i++) { %>
+                <%= info.genres[i].name %>, 
+            <% } %>
+            <br />
+            <% var hour = 0;
+            var min = info.runtime;
+            while(min >= 60) {
+                hour++;
+                min -= 60;
+            } %>
+            <b>Duration:</b> 
+            <% if(hour == 0) { %>
+                <%= min %>m
+            <% } else { %>
+                <%= hour %>h <%= min %>m
+            <% } %>
+            <br />
+            <b>Rating:</b> <%= certification %>
+        </div>
+    </div>
+    <div class="col-10 mt-2 pr-0">
+        <div class="mr-3">
+            <% var year = info.release_date.substring(0, 4); %>
+            <h3 class="mt-0"><%= info.title %> (<%= year %>)</h3>
+            <h4>Score: <%= info.vote_average %> | Members: <%= info.vote_count %></h4>
+            <hr>
+            <h5>Synopsis</h5>
+            <span style="white-space: pre-line"><%= info.overview %></span>
+            <hr>
+            <% if (info.belongs_to_collection != null) { %>
+                <h5>Collection</h5>
+                <p><%= info.belongs_to_collection.name %></p>
+                <hr>
+            <% } %>
+            <h5>Cast & Crew</h5>
+            <div class="row">
+                <% for (var i = 0; i < cast.length; i++) { %>
+                <div class="col-3 mb-1">
+                    <div class="media">
+                        <% var profilePath = cast[i].profile_path; %>
+                        <% if(profilePath == null) { // check if poster is null
+                            profilePath = "http://epaper2.mid-day.com/images/no_image_thumb.gif"; 
+                        } else {
+                            profilePath = "http://image.tmdb.org/t/p/w92/" + profilePath;
+                        } %>
+                        <img class="mr-3" src="<%= profilePath %>" alt="" width="70" height="105" style="object-fit: cover">
+                        <div class="media-body">
+                            <h6 class="mt-0"><%= cast[i].name %></h6>
+                            <%= cast[i].character %>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+            <a href="">Show more</a>
+            <hr>
+            <h5>Reviews</h5>
+            <% var maxNumReview = 2; %>
+            <% if (reviews.length < maxNumReview) { %>
+                <% maxNumReview = reviews.length; %>
+            <% } %>
+            <% for (var i = 0; i < maxNumReview; i++) { %>
+            <div class="card mb-1">
+                <div class="card-body">
+                    <h5>A review by <%= reviews[i].author %></h5>
+                    <div class="readmore"><span style="white-space: pre-line"><%= reviews[i].content %></span></div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+<!--read more-->
+<script src="js/readmore.min.js"></script>
+<script>
+$('.readmore').readmore();
+</script>
+
+</body>
+</html>

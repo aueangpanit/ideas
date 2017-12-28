@@ -50,9 +50,9 @@
             posterPath = "http://image.tmdb.org/t/p/w92/" + posterPath;
         } %>
         <li class="media">
-            <img class="mr-3" src="<%= posterPath %>" alt="" width="92" height="138" style="object-fit: cover">
-            <div class="media-body line-limit">
-            <h5 class="mt-2 mb-0"><%= name %></h5>
+            <a href="info?id=<%= results[i].id %>&mt=<%= mediaType %>"><img class="mr-3" src="<%= posterPath %>" alt="" width="92" height="138" style="object-fit: cover"></a>
+            <div class="media-body line-limit mr-3">
+            <a href="info?id=<%= results[i].id %>&mt=<%= mediaType %>"><h5 class="mt-2 mb-0"><%= name %></h5></a>
             <p><%= mediaType %></p>
             <p><%= overview %></p>
             </div>
