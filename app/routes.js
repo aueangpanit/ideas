@@ -160,7 +160,24 @@ module.exports = function(app, passport, request) {
         });
         // movie - recommendations
         app.get('/movie/recommendations', function(req, res) {
+            var options = { method: 'GET',
+            url: 'https://api.themoviedb.org/3/movie/' + req.query.id + '/recommendations',
+            qs: 
+             { page: '1',
+               language: 'en-US',
+               api_key: apiKey },
+            body: '{}' };
+          
+            request(options, function (error, response, body) {
+                if (error) throw new Error(error);
             
+                body = JSON.parse(body);
+                var recommendations = body.results;
+
+                res.json({
+                    recommendations: recommendations
+                });
+            });
         });
 
         // =====================================
@@ -168,7 +185,6 @@ module.exports = function(app, passport, request) {
         // =====================================
         // show the login form
         app.get('/login', function(req, res) {
-    
             // render the page and pass in any flash data if it exists
             res.render('pages/login.ejs', { message: req.flash('loginMessage') }); 
         });
@@ -185,7 +201,6 @@ module.exports = function(app, passport, request) {
         // =====================================
         // show the signup form
         app.get('/signup', function(req, res) {
-    
             // render the page and pass in any flash data if it exists
             res.render('pages/signup.ejs', { message: req.flash('signupMessage') });
         });

@@ -10,6 +10,11 @@
             /*line-height: 1.2em; /* the height of one text line */
             overflow: hidden;
         }
+        .line-limit {
+            height: 8em; /* that's one line, 2em for 2 lines, etc...*/
+            line-height: 1.2em; /* the height of one text line */
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -61,13 +66,15 @@
             <p id="collection"></p>
             <hr>
             <h5>Cast & Crew</h5>
-            <div id="credits" class="row">
-
-            </div>
+            <div id="credits" class="row"></div>
+            <a href="#">Full Cast & Crew</a>
             <hr>
             <h5 id="reviews">Reviews</h5>
-            
-            
+            <a href="#">More Reviews</a>
+            <hr>
+            <h5>Recommendations</h5>
+            <ul id="recommendations" class="list-unstyled"></ul>
+            <a href="#">More Recommendations</a>
         </div>
     </div>
 </div>
@@ -217,6 +224,47 @@ $.ajax(reviewsSettings).done(function (response) {
     }
     $('#reviews').after(reviewsHtml);
     $('.readmore').readmore();
+});
+
+// get recommendations
+var recommendationsSettings = {
+    "async": true,
+    "crossDomain": false,
+    "url": "/movie/recommendations?id=" + <%=id%>,
+    "method": "GET",
+    "headers": {},
+    "data": "{}"
+}
+$.ajax(recommendationsSettings).done(function (response) {
+    var recommendations = response.recommendations;
+    console.log(recommendations);
+
+    var recommendationsHtml = "";
+    var maxRecommendations = 5;
+    if(recommendations.length < maxRecommendations) {
+        maxRecommendations = recommendations.length;
+    }
+    for(var i = 0; i < maxRecommendations; i++) {
+        var posterPath = recommendations[i].poster_path;
+        var name = recommendations[i].title;
+        var mediaType = "movie";
+        var overview = recommendations[i].overview;
+        var pp = posterPath;
+        if(posterPath == null) { // check if poster is null
+            posterPath = "http://epaper2.mid-day.com/images/no_image_thumb.gif"; 
+        } else {
+            posterPath = "http://image.tmdb.org/t/p/w92/" + posterPath;
+        }
+        recommendationsHtml += '<li class="media">' + 
+                                    '<a href="info?id=' + recommendations[i].id + '&mt=' + mediaType + '&pp=' + pp  +'&t=' + name +'"><img class="mr-3" src="' + posterPath + '" alt="" width="92" height="138" style="object-fit: cover"></a>' +
+                                    '<div class="media-body line-limit mr-3">' +
+                                        '<a href="info?id=' + recommendations[i].id + '&mt=' + mediaType + '&pp=' + pp +'&t=' + name + '"><h5 class="mt-2 mb-0">' + name + '</h5></a>' +
+                                        '<p>' + mediaType + '</p>' +
+                                        '<p>' + overview + '</p>' +
+                                    '</div>' +
+                                '</li>';
+    }
+    $('#recommendations').html(recommendationsHtml);
 });
 </script>
 
