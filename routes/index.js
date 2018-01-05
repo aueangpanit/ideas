@@ -1,19 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-var user_authentication_controller = require('../controllers/userAuthenticationController');
+var passport = require('../config/passport');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+var authenticationController = require('../controllers/authenticationController');
 
-router.get('/login', user_authentication_controller.user_login_get);
-
-router.post('/login', user_authentication_controller.user_login_post);
-
-router.get('/signup', user_authentication_controller.user_signup_get);
-
-router.post('/signup', user_authentication_controller.user_signup_post);
+router.get('/', authenticationController.index); // Home Page
+router.get('/login', authenticationController.login_get); // Login GET
+router.post('/login', authenticationController.login_post); // Login POST
+router.get('/signup', authenticationController.signup_get); // Signup GET
+router.post('/signup', authenticationController.signup_post); // signup POST
+router.get('/profile', authenticationController.isLoggedIn, authenticationController.profile); // Profile GET
+router.get('/logout', authenticationController.logout); // Logout GET
 
 module.exports = router;
