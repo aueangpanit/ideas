@@ -7,8 +7,16 @@ var passport = require('../config/passport');
 //const { sanitizeBody } = require('express-validator/filter');
 
 // Render home page
-exports.index = function(req, res) {   
-    res.render('pages/index.ejs', { signup_message: req.flash('signupMessage'), login_message: req.flash('loginMessage') });
+exports.index_get = function(req, res) {
+    var loggedIn = req.isAuthenticated() ? true : false;
+
+    console.log(loggedIn);
+
+    res.render('pages/index.ejs', { 
+        signup_message: req.flash('signupMessage'), 
+        login_message: req.flash('loginMessage'),
+        logged_in: loggedIn
+    });
 };
 
 exports.index_login_post = passport.authenticate('local-login', {
@@ -25,7 +33,7 @@ exports.index_signup_post = passport.authenticate('local-signup', {
 });
 
 // Render profile page
-exports.profile = function(req, res) {
+exports.profile_get = function(req, res) {
     res.render('pages/profile.ejs', {
         user : req.user // get the user out of session and pass to template
     });
