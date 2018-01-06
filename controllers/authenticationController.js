@@ -8,30 +8,19 @@ var passport = require('../config/passport');
 
 // Render home page
 exports.index = function(req, res) {   
-    res.render('pages/index.ejs');
+    res.render('pages/index.ejs', { signup_message: req.flash('signupMessage'), login_message: req.flash('loginMessage') });
 };
 
-// Render login page
-exports.login_get = function(req, res) {
-    res.render('pages/login.ejs', { message: req.flash('loginMessage') });
-};
-
-// Process login form
-exports.login_post = passport.authenticate('local-login', {
+exports.index_login_post = passport.authenticate('local-login', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the login page if there is an error
     failureFlash : true // allow flash messages
 });
 
-// Render signup page
-exports.signup_get = function(req, res) {
-    res.render('pages/signup.ejs', { message: req.flash('signupMessage') });
-}
-
 // Process signup form
-exports.signup_post = passport.authenticate('local-signup', {
+exports.index_signup_post = passport.authenticate('local-signup', {
     successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureRedirect : '/', // redirect back to the login page if there is an error
     failureFlash : true // allow flash messages
 });
 
