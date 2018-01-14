@@ -34,8 +34,12 @@ exports.index_signup_post = passport.authenticate('local-signup', {
 
 // Render profile page
 exports.profile_get = function(req, res) {
+    var loggedIn = req.isAuthenticated() ? true : false;
+
     res.render('pages/profile.ejs', {
-        user : req.user // get the user out of session and pass to template
+        user : req.user, // get the user out of session and pass to template
+        logged_in: loggedIn,
+        user_id: req.user._id
     });
 };
 
