@@ -8,14 +8,10 @@ var passport = require('../config/passport');
 
 // Render home page
 exports.index_get = function(req, res) {
-    var loggedIn = req.isAuthenticated() ? true : false;
-
-    console.log(loggedIn);
-
     res.render('pages/index.ejs', { 
         signup_message: req.flash('signupMessage'), 
         login_message: req.flash('loginMessage'),
-        logged_in: loggedIn
+        logged_in: req.isAuthenticated() ? true : false
     });
 };
 
@@ -34,18 +30,15 @@ exports.index_signup_post = passport.authenticate('local-signup', {
 
 // Render profile page
 exports.profile_get = function(req, res) {
-    var loggedIn = req.isAuthenticated() ? true : false;
-
     res.render('pages/profile.ejs', {
         user : req.user, // get the user out of session and pass to template
-        logged_in: loggedIn,
+        logged_in: req.isAuthenticated() ? true : false,
         user_id: req.user._id
     });
 };
 
 // Route middleware to make sure a user is logged in
 exports.isLoggedIn = function (req, res, next) {
-
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated())
         return next();

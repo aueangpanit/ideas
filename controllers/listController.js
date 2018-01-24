@@ -6,10 +6,10 @@ var passport = require('../config/passport');
 //const { body,validationResult } = require('express-validator/check');
 //const { sanitizeBody } = require('express-validator/filter');
 
-// Logout
 exports.user_lists_get = function(req, res) {
     res.render('pages/user-lists.ejs', {
-        user_id: req.query.id
+        user_id: req.query.id,
+        logged_in: req.isAuthenticated() ? true : false
     });
 };
 
