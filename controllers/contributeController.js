@@ -9,6 +9,7 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.add_movie_get = function(req, res) {
     res.render('pages/add-movie.ejs', {
         logged_in: req.isAuthenticated() ? true : false,
+        user_id: req.user._id,
         errors: null
     });
 };
@@ -32,7 +33,7 @@ exports.add_movie_post = [
         // Create a Movie object with escaped and trimmed data.
         var movie = new Movie({
             title: req.body.title,
-            original_title: req.body.synopsis,
+            original_title: req.body.originalTitle,
             synopsis: req.body.synopsis,
             duration: req.body.duration,
             status: req.body.status
@@ -42,6 +43,7 @@ exports.add_movie_post = [
             // There are errors. Render form again with sanitized values/error messages.
             res.render('pages/add-movie.ejs', {
                 logged_in: req.isAuthenticated() ? true : false,
+                user_id: req.user._id,
                 movie: movie,
                 errors: errors.array() 
             });
