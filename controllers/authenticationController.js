@@ -28,6 +28,31 @@ exports.index_signup_post = passport.authenticate('local-signup', {
     failureFlash : true // allow flash messages
 });
 
+// Render login page
+exports.login_get = function(req, res) {
+    res.render('pages/login.ejs', {
+        login_message: req.flash('loginMessage')
+    });
+};
+
+exports.login_post = passport.authenticate('local-login', {
+    successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/login', // redirect back to the login page if there is an error
+    failureFlash : true // allow flash messages
+});
+
+exports.signup_get = function(req, res) {
+    res.render('pages/signup.ejs', {
+        signup_message: req.flash('signupMessage')
+    });
+};
+
+exports.signup_post = passport.authenticate('local-signup', {
+    successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the login page if there is an error
+    failureFlash : true // allow flash messages
+});
+
 // Render profile page
 exports.profile_get = function(req, res) {
     res.render('pages/profile.ejs', {
@@ -44,7 +69,7 @@ exports.isLoggedIn = function (req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/login');
 };
 
 // Logout

@@ -6,12 +6,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
-<!--nav bar-->
-<% include ../partials/nav_bar %>
-
-<% if (login_message.length > 0) { %>
-    <div class="alert alert-danger" style="border-radius: 0"><%= login_message %></div>
-<% } %>
 <% if (signup_message.length > 0) { %>
     <div class="alert alert-danger" style="border-radius: 0"><%= signup_message %></div>
 <% } %>
@@ -22,7 +16,7 @@
             
         </div>
         <div class="col-sm">
-            <form class="mt-5" action="index-signup" method="POST">
+            <form class="mt-5 pt-5" method="POST">
                 <h1>Sign up</h1>
                 <div class="form-group">
                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email">
@@ -32,6 +26,9 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <br />
+            Already have an account? <a href="/login">Login</a><br />
+            <a href="/">Home</a>
         </div>
     </div>
 </div>
