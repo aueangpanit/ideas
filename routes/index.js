@@ -14,4 +14,5 @@ router.get('/signup', authenticationController.signup_get) // Signup GET
 router.post('/signup', authenticationController.signup_post) // Signup POST
 router.get('/profile', authenticationController.isLoggedIn, authenticationController.profile_get); // Profile GET
 router.get('/logout', authenticationController.logout); // Logout GET
+
 module.exports = router;

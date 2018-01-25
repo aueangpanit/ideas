@@ -53,9 +53,9 @@ exports.add_movie_post = [
             // Data from form is valid. Save book.
             movie.save(function (err) {
                 if (err) { return next(err); }
-                    //successful - redirect to new book record.
-                    res.redirect('/');
-                });
+                //successful - redirect to new book record.
+                res.redirect('/');
+            });
         }
     }
 ];
