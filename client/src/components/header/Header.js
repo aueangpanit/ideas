@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import M from "materialize-css/dist/js/materialize.min.js";
 
-import LoginDropdownContent from "./LoginDropdownContent";
+import { LOGIN_DROPDOWN, USER_DROPDOWN } from "./dropdownContents";
+import DropdownContent from "./DropdownContent";
+import Navigation from "./Navigation";
 
 const HEADER = "header";
 const MOBILE_SIDEBAR = "mobile-sidebar";
@@ -15,52 +18,40 @@ class Header extends Component {
     });
   }
 
-  renderNav(id) {
-    return (
-      <div>
-        <li>
-          <a href="sass.html">Signup</a>
-        </li>
-        <li>
-          <a
-            className="dropdown-trigger"
-            href="#!"
-            data-target={`${id}-dropdown-content`}
-          >
-            Login<i className="material-icons right">arrow_drop_down</i>
-          </a>
-        </li>
-      </div>
-    );
-  }
-
   render() {
+    console.log(this.props.auth);
     return (
       <div>
-        <LoginDropdownContent id={HEADER} />
+        <DropdownContent id={HEADER} content={LOGIN_DROPDOWN} />
 
         <nav>
           <div className="nav-wrapper container">
-            <a href="#!" className="brand-logo">
+            <a href="/" className="brand-logo">
               lisit
             </a>
-            <a href="#" data-target={MOBILE_SIDEBAR} class="sidenav-trigger">
-              <i class="material-icons">menu</i>
+            <a data-target={MOBILE_SIDEBAR} className="sidenav-trigger">
+              <i className="material-icons">menu</i>
             </a>
             <ul className="right hide-on-med-and-down">
-              {this.renderNav(HEADER)}
+              <Navigation id={HEADER} auth={this.props.auth} />
             </ul>
           </div>
         </nav>
 
-        <LoginDropdownContent id={MOBILE_SIDEBAR} />
+        <DropdownContent id={MOBILE_SIDEBAR} content={LOGIN_DROPDOWN} />
 
-        <ul class="sidenav" id={MOBILE_SIDEBAR}>
-          {this.renderNav(MOBILE_SIDEBAR)}
+        <ul className="sidenav" id={MOBILE_SIDEBAR}>
+          <Navigation id={MOBILE_SIDEBAR} auth={this.props.auth} />
         </ul>
       </div>
     );
   }
 }
 
-export default Header;
+const mapStateToProps = ({ auth }) => {
+  return {
+    auth
+  };
+};
+
+export default connect(mapStateToProps)(Header);
