@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "description": "A media database and forum where you can list your favourite shows and keep a record of your preferences over time.",
   "main": "index.js",
+  "engines": {
+    "node": "8.1.1",
+    "npm": "5.0.3"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
     "server": "nodemon index.js",
-    "dev": "\"npm run server\""
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -19,6 +25,7 @@
   },
   "homepage": "https://github.com/aueangpanit/LISiT#readme",
   "dependencies": {
+    "concurrently": "^3.6.0",
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.3",
     "mongoose": "^5.2.4",
