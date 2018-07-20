@@ -11,7 +11,7 @@ export const USER_DROPDOWN = {
   name: "user-dropdown",
   contents: [
     { text: "Profile", link: "#" },
-    { text: "List", link: "#" },
-    { text: "Settings", link: "#" }
+    { text: "Settings", link: "#" },
+    { text: "Logout", link: "/api/logout" }
   ]
 };

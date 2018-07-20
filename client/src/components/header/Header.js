@@ -19,10 +19,12 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.props.auth);
     return (
       <div>
-        <DropdownContent id={HEADER} content={LOGIN_DROPDOWN} />
+        <DropdownContent
+          id={HEADER}
+          content={this.props.auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
+        />
 
         <nav>
           <div className="nav-wrapper container">
@@ -38,7 +40,10 @@ class Header extends Component {
           </div>
         </nav>
 
-        <DropdownContent id={MOBILE_SIDEBAR} content={LOGIN_DROPDOWN} />
+        <DropdownContent
+          id={MOBILE_SIDEBAR}
+          content={this.props.auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
+        />
 
         <ul className="sidenav" id={MOBILE_SIDEBAR}>
           <Navigation id={MOBILE_SIDEBAR} auth={this.props.auth} />
