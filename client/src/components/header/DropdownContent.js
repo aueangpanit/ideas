@@ -1,8 +1,19 @@
 import _ from "lodash";
 import React from "react";
+import { Link } from "react-router-dom";
+
+import { LINK_TYPE } from "./dropdownContents";
 
 const renderItems = items => {
   return _.map(items, item => {
+    if (item.type === LINK_TYPE.link) {
+      return (
+        <li key={item.text}>
+          <Link to={item.link}>{item.text}</Link>
+        </li>
+      );
+    }
+
     return (
       <li key={item.text}>
         <a href={item.link}>{item.text}</a>

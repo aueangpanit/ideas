@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import M from "materialize-css/dist/js/materialize.min.js";
 
 import { LOGIN_DROPDOWN, USER_DROPDOWN } from "./dropdownContents";
@@ -28,9 +29,9 @@ class Header extends Component {
 
         <nav>
           <div className="nav-wrapper container">
-            <a href="/" className="brand-logo">
+            <Link to="/" className="brand-logo">
               lisit
-            </a>
+            </Link>
             <a data-target={MOBILE_SIDEBAR} className="sidenav-trigger">
               <i className="material-icons">menu</i>
             </a>

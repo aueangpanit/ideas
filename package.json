@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/aueangpanit/LISiT#readme",
   "dependencies": {
+    "aws-sdk": "^2.279.1",
     "concurrently": "^3.6.0",
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.3",

@@ -24,6 +24,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require("./routes/authRoutes")(app);
+require("./routes/S3Test")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
