@@ -14,6 +14,9 @@ class Header extends Component {
   componentDidMount() {
     M.Sidenav.init(document.querySelectorAll(".sidenav"), {});
     M.Dropdown.init(document.querySelectorAll(".dropdown-trigger"), {
+      hover: true
+    });
+    M.Dropdown.init(document.querySelector("#header-dropdown-trigger"), {
       hover: true,
       constrainWidth: false
     });
