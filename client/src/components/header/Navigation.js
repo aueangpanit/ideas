@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { LOGIN_DROPDOWN, USER_DROPDOWN } from "./dropdownContents";
 
@@ -12,7 +13,7 @@ const Navigation = ({ id, auth }) => {
             className="dropdown-trigger"
             data-target={`${id}-${USER_DROPDOWN.name}-content`}
           >
-            User
+            {auth.username ? auth.username : "User"}
             <i className="material-icons right">arrow_drop_down</i>
           </a>
         </li>
@@ -23,10 +24,11 @@ const Navigation = ({ id, auth }) => {
   return (
     <div>
       <li>
-        <a href="/">Signup</a>
+        <Link to="/signup">Signup</Link>
       </li>
       <li>
         <a
+          id={`${id}-dropdown-trigger`}
           className="dropdown-trigger"
           data-target={`${id}-${LOGIN_DROPDOWN.name}-content`}
         >

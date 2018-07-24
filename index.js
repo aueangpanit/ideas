@@ -1,18 +1,21 @@
 const express = require("express");
-const mongooes = require("mongoose");
+const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
+const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 
 require("./models/User");
 require("./services/passport");
 
-mongooes.connect(
+mongoose.connect(
   keys.mongoURI,
   { useNewUrlParser: true }
 );
 
 const app = express();
+
+app.use(bodyParser.json());
 
 app.use(
   cookieSession({
@@ -24,6 +27,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require("./routes/authRoutes")(app);
+require("./routes/profileRoutes")(app);
+require("./routes/S3Test")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

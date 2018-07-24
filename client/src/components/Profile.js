@@ -1,9 +1,22 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import PleaseLogin from "./PleaseLogin";
 
 class Profile extends Component {
   render() {
-    return <div>Profile</div>;
+    if (this.props.auth) {
+      return <div>Profile</div>;
+    }
+
+    return <PleaseLogin />;
   }
 }
 
-export default Profile;
+function mapStateToProps({ auth }) {
+  return {
+    auth
+  };
+}
+
+export default connect(mapStateToProps)(Profile);

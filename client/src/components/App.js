@@ -6,6 +6,8 @@ import * as actions from "../actions";
 import Header from "./header/Header";
 import Landing from "./Landing";
 import Profile from "./Profile";
+import Signup from "./newUserForm/Signup";
+import NewUserForm from "./newUserForm/NewUserForm";
 
 class App extends Component {
   componentDidMount() {
@@ -19,6 +21,8 @@ class App extends Component {
           <Header />
           <Route exact path="/" component={Landing} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/new_user_form" component={NewUserForm} />
         </div>
       </BrowserRouter>
     );
