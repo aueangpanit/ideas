@@ -10,27 +10,37 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="input-field">
-          <Field name="authMethod" component="select">
-            <option value="google">Google</option>
-            <option value="email">Email</option>
-          </Field>
-          <label>Authentication Method</label>
+      <div className="container" style={{ marginTop: "20px" }}>
+        <div className="row">
+          <div className="col s12">
+            <div className="row">
+              <div className="col s6">
+                <div className="input-field">
+                  <Field name="authMethod" component="select">
+                    <option value="google">Google</option>
+                    <option value="email">Email</option>
+                  </Field>
+                  <label>Authentication Method</label>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <button
+                onClick={this.props.onCancel}
+                className="grey darken-3 white-text btn-flat wave-effect"
+              >
+                Back
+              </button>
+              <a
+                href={`/auth/${this.props.formValue.authMethod}`}
+                className="blue darken-3 btn-flat right white-text wave-effect"
+              >
+                Next
+                <i className="material-icons right">done</i>
+              </a>
+            </div>
+          </div>
         </div>
-        <button
-          onClick={this.props.onCancel}
-          className="yellow darken-3 white-text btn-flat"
-        >
-          Back
-        </button>
-        <a
-          href={`/auth/${this.props.formValue.authMethod}`}
-          className="teal btn-flat right white-text"
-        >
-          Submit
-          <i className="material-icons right">done</i>
-        </a>
       </div>
     );
   }

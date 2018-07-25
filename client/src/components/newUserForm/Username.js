@@ -79,7 +79,13 @@ class Username extends Component {
               <button
                 onClick={this.props.handleClick}
                 type="submit"
-                className="grey darken-3 btn-flat right white-text waves-effect"
+                className={`${
+                  this.props.usernameCheck
+                    ? this.props.usernameCheck.available && !this.props.error
+                      ? "blue"
+                      : "grey"
+                    : "grey"
+                } darken-3 btn-flat right white-text waves-effect`}
               >
                 Submit
                 <i className="material-icons right">done</i>
