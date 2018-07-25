@@ -1,5 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const keys = require("../config/keys");
 
@@ -34,4 +35,20 @@ passport.use(
       done(null, user);
     }
   )
+);
+
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    const existingUser = await Username.findOne({ username: username });
+
+    if (existingUser) {
+      return done(null, existingUser);
+    }
+
+    const user = await new User({
+      username: username,
+      password: password
+    }).save();
+    done(null, user);
+  })
 );

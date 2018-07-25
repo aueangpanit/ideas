@@ -6,9 +6,18 @@ export const LINK_TYPE = {
 export const LOGIN_DROPDOWN = {
   name: "login-dropdown",
   contents: [
-    { text: "Login With Google", link: "/auth/google", type: LINK_TYPE.a },
-    { text: "Login With Facebook", link: "#", type: LINK_TYPE.a },
-    { text: "Login With Email", link: "#", type: LINK_TYPE.a }
+    {
+      text: "Login With Google",
+      value: "google",
+      link: "/auth/google",
+      type: LINK_TYPE.a
+    },
+    {
+      text: "Login With Facebook",
+      value: "facebook",
+      link: "#",
+      type: LINK_TYPE.a
+    }
   ]
 };
 

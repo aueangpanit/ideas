@@ -1,11 +1,23 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import { connect } from "react-redux";
 import M from "materialize-css";
 
+import { LOGIN_DROPDOWN } from "../header/dropdownContents";
+
 class Signup extends Component {
   componentDidMount() {
     M.FormSelect.init(document.querySelectorAll("select"));
+  }
+  renderOptions() {
+    return _.map(LOGIN_DROPDOWN.contents, option => {
+      return (
+        <option key={option.value} value={option.value}>
+          {option.text}
+        </option>
+      );
+    });
   }
 
   render() {
@@ -17,8 +29,7 @@ class Signup extends Component {
               <div className="col s6">
                 <div className="input-field">
                   <Field name="authMethod" component="select">
-                    <option value="google">Google</option>
-                    <option value="email">Email</option>
+                    {this.renderOptions()}
                   </Field>
                   <label>Authentication Method</label>
                 </div>
