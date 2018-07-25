@@ -1,21 +1,29 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
 
-module.exports = app => {
-  app.post("/api/profile/update/username", async (req, res) => {
-    const user = await User.findOne({ googleId: req.user.googleId });
-    user.set({ username: req.body.username });
-    const modifiedUser = await user.save();
+const requireLogin = require("../middleware/requireLogin");
+const requireUniqueUsername = require("../middleware/requireUniqueUsername");
 
-    res.send(modifiedUser);
-  });
+module.exports = app => {
+  app.post(
+    "/api/profile/update/username",
+    requireLogin,
+    requireUniqueUsername,
+    async (req, res) => {
+      const user = await User.findOne({ googleId: req.user.googleId });
+      user.set({ username: req.body.username });
+      const modifiedUser = await user.save();
+
+      res.send(modifiedUser);
+    }
+  );
 
   app.get("/api/profile/is_username_avaliable/:username", async (req, res) => {
     const user = await User.findOne({ username: req.params.username });
     if (user) {
-      res.send({ avaliable: false });
+      res.send({ available: false });
     } else {
-      res.send({ avaliable: true });
+      res.send({ available: true });
     }
   });
 };

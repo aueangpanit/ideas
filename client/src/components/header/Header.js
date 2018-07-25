@@ -30,7 +30,7 @@ class Header extends Component {
           content={this.props.auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
         />
 
-        <nav>
+        <nav className="grey darken-4">
           <div className="nav-wrapper container">
             <Link to="/" className="brand-logo">
               lisit
