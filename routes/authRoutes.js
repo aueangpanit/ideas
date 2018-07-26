@@ -14,9 +14,9 @@ module.exports = app => {
     (req, res) => {
       if (req.user.username) {
         res.redirect("/profile");
+      } else {
+        res.redirect("/new_user_form");
       }
-
-      res.redirect("/new_user_form");
     }
   );
 

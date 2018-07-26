@@ -11,12 +11,6 @@ export const LOGIN_DROPDOWN = {
       value: "google",
       link: "/auth/google",
       type: LINK_TYPE.a
-    },
-    {
-      text: "Login With Facebook",
-      value: "facebook",
-      link: "#",
-      type: LINK_TYPE.a
     }
   ]
 };
