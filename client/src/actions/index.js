@@ -27,10 +27,15 @@ export const checkUsernameLoading = () => {
   };
 };
 
-export const updateUsername = (values, history) => async dispatch => {
+export const newUserFormSubmit = (values, history) => async dispatch => {
   const res = await axios.post("/api/profile/update/username", {
-    username: values
+    username: values.username
   });
+
+  // do two post requist for update username and upload file to s3.
+
+  //axios post to s3
+
   history.push("/profile");
   dispatch({
     type: FETCH_USER,
