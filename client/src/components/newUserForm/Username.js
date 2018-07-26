@@ -25,48 +25,68 @@ class Username extends Component {
 
   onSubmit({ username }) {
     if (username && this.props.usernameCheck.available) {
-      this.props.updateUsername(username, this.props.history);
+      //this.props.updateUsername(username, this.props.history);
+      this.props.nextPage();
     }
   }
 
+  extraInfo({ usernameCheck }) {
+    if (usernameCheck) {
+      if (usernameCheck.available) {
+        return (
+          <div>
+            <i className="material-icons left">done</i>Available
+          </div>
+        );
+      }
+      return (
+        <div className="red-text">
+          <i className="material-icons left">error</i>Already taken. Please
+          choose a different username.
+        </div>
+      );
+    }
+
+    return "";
+  }
+
+  submitButtonClassName({ usernameCheck, error }) {
+    const className = "darken-3 btn-flat right white-text waves-effect";
+    if (usernameCheck) {
+      if (usernameCheck.available && !error) {
+        return `blue ${className}`;
+      }
+      return `grey ${className}`;
+    }
+    return `grey ${className}`;
+  }
+
   render() {
+    const {
+      handleClick,
+      handleSubmit,
+      checkUsernameLoading,
+      usernameCheck
+    } = this.props;
+
     return (
       <div className="container" style={{ marginTop: "20px" }}>
         <div className="row">
           <form
             className="col s12"
-            onSubmit={this.props.handleSubmit(this.onSubmit.bind(this))}
+            onSubmit={handleSubmit(this.onSubmit.bind(this))}
           >
             <Field
               onChange={() => {
-                this.props.checkUsernameLoading();
+                checkUsernameLoading();
                 this.debouncedOnChange();
               }}
               name="username"
               component={TextFieldExtraInfo}
               label="Username"
               classSize="s6"
-              loading={
-                this.props.usernameCheck
-                  ? this.props.usernameCheck.loading
-                  : false
-              }
-              extraInfo={
-                this.props.usernameCheck ? (
-                  this.props.usernameCheck.available ? (
-                    <div>
-                      <i className="material-icons left">done</i>Available
-                    </div>
-                  ) : (
-                    <div className="red-text">
-                      <i className="material-icons left">error</i>Already taken.
-                      Please choose a different username.
-                    </div>
-                  )
-                ) : (
-                  ""
-                )
-              }
+              loading={usernameCheck ? usernameCheck.loading : false}
+              extraInfo={this.extraInfo()}
             />
 
             <div className="row">
@@ -77,17 +97,11 @@ class Username extends Component {
                 Cancel
               </Link>
               <button
-                onClick={this.props.handleClick}
+                onClick={handleClick}
                 type="submit"
-                className={`${
-                  this.props.usernameCheck
-                    ? this.props.usernameCheck.available && !this.props.error
-                      ? "blue"
-                      : "grey"
-                    : "grey"
-                } darken-3 btn-flat right white-text waves-effect`}
+                className={this.submitButtonClassName()}
               >
-                Submit
+                Next
                 <i className="material-icons right">done</i>
               </button>
             </div>
