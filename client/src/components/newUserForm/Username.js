@@ -1,11 +1,11 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { reduxForm, Field } from 'redux-form';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import TextFieldExtraInfo from "../utils/form/TextFieldExtraInfo";
-import * as actions from "../../actions";
+import TextFieldExtraInfo from '../utils/form/TextFieldExtraInfo';
+import * as actions from '../../actions';
 
 class Username extends Component {
   constructor(props) {
@@ -23,14 +23,19 @@ class Username extends Component {
     }
   }
 
-  onSubmit({ username }) {
-    if (username && this.props.usernameCheck.available) {
+  onSubmit() {
+    const {
+      formValues: { username },
+      usernameCheck: { available }
+    } = this.props;
+    if (username && available) {
       //this.props.updateUsername(username, this.props.history);
       this.props.nextPage();
     }
   }
 
-  extraInfo({ usernameCheck }) {
+  extraInfo() {
+    const { usernameCheck } = this.props;
     if (usernameCheck) {
       if (usernameCheck.available) {
         return (
@@ -47,11 +52,12 @@ class Username extends Component {
       );
     }
 
-    return "";
+    return '';
   }
 
-  submitButtonClassName({ usernameCheck, error }) {
-    const className = "darken-3 btn-flat right white-text waves-effect";
+  submitButtonClassName() {
+    const { usernameCheck, error } = this.props;
+    const className = 'darken-3 btn-flat right white-text waves-effect';
     if (usernameCheck) {
       if (usernameCheck.available && !error) {
         return `blue ${className}`;
@@ -70,7 +76,7 @@ class Username extends Component {
     } = this.props;
 
     return (
-      <div className="container" style={{ marginTop: "20px" }}>
+      <div className="container" style={{ marginTop: '20px' }}>
         <div className="row">
           <form
             className="col s12"
@@ -116,7 +122,7 @@ function validate(values) {
   const errors = {};
 
   if (!values.username) {
-    errors.username = "Please enter a username.";
+    errors.username = 'Please enter a username.';
   }
 
   return errors;
@@ -136,6 +142,6 @@ Username = connect(
 
 export default reduxForm({
   validate,
-  form: "newUserForm",
+  form: 'newUserForm',
   destroyOnUnmount: false
 })(Username);
