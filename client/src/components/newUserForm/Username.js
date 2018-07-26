@@ -29,7 +29,7 @@ class Username extends Component {
       usernameCheck: { available }
     } = this.props;
     if (username && available) {
-      //this.props.updateUsername(username, this.props.history);
+      //updateUsername(username, this.props.history);
       this.props.nextPage();
     }
   }

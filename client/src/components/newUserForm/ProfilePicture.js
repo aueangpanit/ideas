@@ -1,30 +1,22 @@
-import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
+import React, { Component } from 'react';
+import { reduxForm, Field } from 'redux-form';
+
+import FileInput from '../utils/form/FileInput';
 
 class ProfilePicture extends Component {
   onSubmit() {
-    console.log("hello");
+    console.log('hello');
   }
 
+  onChange() {}
+
   render() {
-    const { previousPage } = this.props;
+    const { previousPage, handleSubmit } = this.props;
     return (
-      <div className="container" style={{ marginTop: "20px" }}>
+      <div className="container" style={{ marginTop: '20px' }}>
         <div className="row">
-          <form className="col s12" onSubmit={this.onSubmit}>
-            <div className="row">
-              <div className="col s6">
-                <div className="file-field input-field">
-                  <div className="btn">
-                    <span>File</span>
-                    <input type="file" />
-                  </div>
-                  <div className="file-path-wrapper">
-                    <input className="file-path validate" type="text" />
-                  </div>
-                </div>
-              </div>
-            </div>
+          <form className="col s12" onSubmit={handleSubmit(this.onSubmit)}>
+            <FileInput onChange={this.onChange} />
             <div className="row">
               <button
                 onClick={previousPage}
@@ -47,4 +39,15 @@ class ProfilePicture extends Component {
   }
 }
 
-export default ProfilePicture;
+function validate(values) {
+  console.log(values);
+  const errors = {};
+
+  return errors;
+}
+
+export default reduxForm({
+  validate,
+  form: 'newUserForm',
+  destroyOnUnmount: false
+})(ProfilePicture);
