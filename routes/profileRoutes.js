@@ -3,6 +3,7 @@ const User = mongoose.model("user");
 
 const requireLogin = require("../middleware/requireLogin");
 const requireUniqueUsername = require("../middleware/requireUniqueUsername");
+const uploadProfilePicture = require("../middleware/uploadProfilePicture");
 
 module.exports = app => {
   app.post(
@@ -26,4 +27,14 @@ module.exports = app => {
       res.send({ available: true });
     }
   });
+
+  app.post(
+    "/api/profile/update/profile_picture/:username",
+    requireLogin,
+    requireUniqueUsername,
+    uploadProfilePicture.single("file"),
+    (req, res) => {
+      res.send({ status: "success" });
+    }
+  );
 };

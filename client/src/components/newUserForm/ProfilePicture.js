@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import FileInput from "../utils/form/FileInput";
+import FileInputExtraInfo from "../utils/form/FileInputExtraInfo";
+import ErrorText from "../utils/form/ErrorText";
+import Loading from "../utils/form/Loading";
 import * as actions from "../../actions";
+
+const MAX_PROFILE_PICTURE_SIZE = 1024 * 1024;
 
 class ProfilePicture extends Component {
   constructor(props) {
@@ -13,7 +18,8 @@ class ProfilePicture extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      file: null
+      file: null,
+      submitted: false
     };
   }
 
@@ -24,11 +30,77 @@ class ProfilePicture extends Component {
     } = this.props;
     const { file } = this.state;
 
-    this.props.newUserFormSubmit({ username, file }, history);
+    if (file) {
+      if (
+        file.type.substring(0, 5) === "image" &&
+        file.size < MAX_PROFILE_PICTURE_SIZE
+      ) {
+        this.props.newUserFormSubmit({ username, file }, history);
+        this.setState({ submitted: true });
+      }
+    } else {
+      this.props.newUserFormSubmit({ username, file }, history);
+      this.setState({ submitted: true });
+    }
   }
 
   onChange(files) {
     this.setState({ file: files[0] });
+  }
+
+  extraInfo() {
+    const { file } = this.state;
+    if (file) {
+      if (file.type.substring(0, 5) !== "image") {
+        return (
+          <ErrorText
+            text="Not an image type file.
+          Please choose an image type file."
+          />
+        );
+      }
+
+      if (file.size >= MAX_PROFILE_PICTURE_SIZE) {
+        return (
+          <ErrorText
+            text="Image too large. Please
+          use an image that's smaller than 1 Mb."
+          />
+        );
+      }
+    }
+  }
+
+  submitButtonClass() {
+    const { file, submitted } = this.state;
+    const className = "darken-3 btn-flat right white-text waves-effect";
+    if (submitted) {
+      return `disabled blue ${className}`;
+    }
+
+    if (file) {
+      if (
+        file.type.substring(0, 5) === "image" &&
+        file.size < MAX_PROFILE_PICTURE_SIZE
+      ) {
+        return `blue ${className}`;
+      }
+      return `grey ${className}`;
+    }
+    return `blue ${className}`;
+  }
+
+  submitButtonText() {
+    const { file, submitted } = this.state;
+    if (submitted) {
+      return "Submiting";
+    }
+
+    if (file) {
+      return "Submit";
+    }
+
+    return "Skip";
   }
 
   render() {
@@ -37,7 +109,11 @@ class ProfilePicture extends Component {
       <div className="container" style={{ marginTop: "20px" }}>
         <div className="row">
           <form className="col s12" onSubmit={handleSubmit(this.onSubmit)}>
-            <FileInput onChange={this.onChange} />
+            <FileInputExtraInfo
+              onChange={this.onChange}
+              loading={false}
+              extraInfo={this.extraInfo()}
+            />
             <div className="row">
               <button
                 onClick={previousPage}
@@ -45,11 +121,8 @@ class ProfilePicture extends Component {
               >
                 Back
               </button>
-              <button
-                type="submit"
-                className="blue darken-3 btn-flat right white-text waves-effect"
-              >
-                {this.state.file ? "Submit" : "Skip"}
+              <button type="submit" className={this.submitButtonClass()}>
+                {this.submitButtonText()}
                 <i className="material-icons right">done</i>
               </button>
             </div>
@@ -61,7 +134,6 @@ class ProfilePicture extends Component {
 }
 
 function validate(values) {
-  console.log(values);
   const errors = {};
 
   return errors;
@@ -76,7 +148,7 @@ function mapStateToProps(state) {
 ProfilePicture = connect(
   mapStateToProps,
   actions
-)(ProfilePicture);
+)(withRouter(ProfilePicture));
 
 export default reduxForm({
   validate,

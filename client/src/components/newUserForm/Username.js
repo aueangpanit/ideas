@@ -5,6 +5,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import TextFieldExtraInfo from "../utils/form/TextFieldExtraInfo";
+import ErrorText from "../utils/form/ErrorText";
 import * as actions from "../../actions";
 
 class Username extends Component {
@@ -44,10 +45,10 @@ class Username extends Component {
         );
       }
       return (
-        <div className="red-text">
-          <i className="material-icons left">error</i>Already taken. Please
-          choose a different username.
-        </div>
+        <ErrorText
+          text="Already taken. Please
+        choose a different username."
+        />
       );
     }
 

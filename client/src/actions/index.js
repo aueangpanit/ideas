@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { post } from "axios";
 import { FETCH_USER, IS_USERNAME_AVAILABLE } from "./types";
 
 export const fetchUser = () => async dispatch => {
@@ -28,13 +28,24 @@ export const checkUsernameLoading = () => {
 };
 
 export const newUserFormSubmit = (values, history) => async dispatch => {
+  // update username
   const res = await axios.post("/api/profile/update/username", {
     username: values.username
   });
 
-  // do two post requist for update username and upload file to s3.
+  // update profile picture
+  if (values.file) {
+    const url = `/api/profile/update/profile_picture/${values.username}`;
+    const formData = new FormData();
+    formData.append("file", values.file);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
 
-  //axios post to s3
+    await post(url, formData, config);
+  }
 
   history.push("/profile");
   dispatch({

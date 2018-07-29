@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     res.status(409).send({
       error: "This username already exist, please choose a different one."
     });
+  } else {
+    next();
   }
-
-  next();
 };
