@@ -35,7 +35,7 @@ export const newUserFormSubmit = (values, history) => async dispatch => {
 
   // update profile picture
   if (values.file) {
-    const url = `/api/profile/update/profile_picture/${values.username}`;
+    const url = "/api/profile/update/profile_picture";
     const formData = new FormData();
     formData.append("file", values.file);
     const config = {

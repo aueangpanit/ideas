@@ -26,7 +26,7 @@ module.exports = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: (req, file, cb) => {
-      cb(null, `profile_picture/${req.params.username}`);
+      cb(null, `profile_picture/${req.user.id}`);
     }
   })
 });

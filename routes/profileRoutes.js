@@ -29,7 +29,7 @@ module.exports = app => {
   });
 
   app.post(
-    "/api/profile/update/profile_picture/:username",
+    "/api/profile/update/profile_picture/",
     requireLogin,
     requireUniqueUsername,
     uploadProfilePicture.single("file"),

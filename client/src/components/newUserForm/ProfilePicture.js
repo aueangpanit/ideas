@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 
 import FileInputExtraInfo from "../utils/form/FileInputExtraInfo";
 import ErrorText from "../utils/form/ErrorText";
-import Loading from "../utils/form/Loading";
 import * as actions from "../../actions";
 
 const MAX_PROFILE_PICTURE_SIZE = 1024 * 1024;
