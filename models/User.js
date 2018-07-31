@@ -6,4 +6,4 @@ const userSchema = new Schema({
   googleId: String
 });
 
-mongoose.model("user", userSchema);
+mongoose.model("User", userSchema);

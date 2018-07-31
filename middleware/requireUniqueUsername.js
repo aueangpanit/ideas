@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = mongoose.model("user");
+const User = mongoose.model("User");
 
 module.exports = async (req, res, next) => {
   const user = await User.findOne({ username: req.body.username });
