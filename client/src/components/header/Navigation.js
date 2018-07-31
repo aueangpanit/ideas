@@ -1,10 +1,13 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import { LOGIN_DROPDOWN, USER_DROPDOWN } from "./dropdownContents";
 
-const Navigation = ({ id, auth }) => {
-  if (auth) {
+class Navigation extends Component {
+  renderProfilePicture() {}
+
+  renderIfLoggedIn() {
+    const { id } = this.props;
     return (
       <div>
         <li />
@@ -14,6 +17,7 @@ const Navigation = ({ id, auth }) => {
             data-target={`${id}-${USER_DROPDOWN.name}-content`}
           >
             {auth.username ? auth.username : "User"}
+
             <i className="material-icons right">arrow_drop_down</i>
           </a>
         </li>
@@ -21,23 +25,35 @@ const Navigation = ({ id, auth }) => {
     );
   }
 
-  return (
-    <div>
-      <li>
-        <Link to="/signup">Signup</Link>
-      </li>
-      <li>
-        <a
-          id={`${id}-dropdown-trigger`}
-          className="dropdown-trigger"
-          data-target={`${id}-${LOGIN_DROPDOWN.name}-content`}
-        >
-          Login
-          <i className="material-icons right">arrow_drop_down</i>
-        </a>
-      </li>
-    </div>
-  );
-};
+  renderIfNotLoggedIn() {
+    const { id } = this.props;
+    return (
+      <div>
+        <li>
+          <Link to="/signup">Signup</Link>
+        </li>
+        <li>
+          <a
+            id={`${id}-dropdown-trigger`}
+            className="dropdown-trigger"
+            data-target={`${id}-${LOGIN_DROPDOWN.name}-content`}
+          >
+            Login
+            <i className="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
+      </div>
+    );
+  }
+
+  render() {
+    const { auth } = this.props;
+    if (auth) {
+      this.renderIfLoggedIn();
+    }
+
+    this.renderIfNotLoggedIn();
+  }
+}
 
 export default Navigation;
