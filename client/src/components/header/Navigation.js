@@ -7,7 +7,7 @@ class Navigation extends Component {
   renderProfilePicture() {}
 
   renderIfLoggedIn() {
-    const { id } = this.props;
+    const { id, auth } = this.props;
     return (
       <div>
         <li />
@@ -49,10 +49,10 @@ class Navigation extends Component {
   render() {
     const { auth } = this.props;
     if (auth) {
-      this.renderIfLoggedIn();
+      return this.renderIfLoggedIn();
     }
 
-    this.renderIfNotLoggedIn();
+    return this.renderIfNotLoggedIn();
   }
 }
 

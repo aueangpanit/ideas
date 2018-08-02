@@ -72,9 +72,11 @@ class Username extends Component {
       handleClick,
       handleSubmit,
       checkUsernameLoading,
-      usernameCheck
+      usernameCheck,
+      formValues
     } = this.props;
 
+    console.log(formValues);
     return (
       <div className="container" style={{ marginTop: "20px" }}>
         <div className="row">
@@ -87,6 +89,8 @@ class Username extends Component {
                 checkUsernameLoading();
                 this.debouncedOnChange();
               }}
+              id="new-user-form-username"
+              value={formValues ? formValues.username : null}
               name="username"
               component={TextFieldExtraInfo}
               label="Username"
