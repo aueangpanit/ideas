@@ -22,9 +22,9 @@ module.exports = app => {
   app.get("/api/profile/is_username_avaliable/:username", async (req, res) => {
     const user = await User.findOne({ username: req.params.username });
     if (user) {
-      res.send({ available: false });
+      res.send(false);
     } else {
-      res.send({ available: true });
+      res.send(true);
     }
   });
 
