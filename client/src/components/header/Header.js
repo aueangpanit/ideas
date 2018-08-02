@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import M from "materialize-css/dist/js/materialize.min.js";
 
-import { LOGIN_DROPDOWN, USER_DROPDOWN } from "./dropdownContents";
+import { LOGIN_DROPDOWN } from "../../data/auth/loginDropdownOptions";
+import { USER_DROPDOWN } from "../../data/profile/profileDropdownOptions";
 import DropdownContent from "./DropdownContent";
 import Navigation from "./Navigation";
 

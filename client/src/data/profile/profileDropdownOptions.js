@@ -1,19 +1,4 @@
-export const LINK_TYPE = {
-  link: "link",
-  a: "a"
-};
-
-export const LOGIN_DROPDOWN = {
-  name: "login-dropdown",
-  contents: [
-    {
-      text: "Login With Google",
-      value: "google",
-      link: "/auth/google",
-      type: LINK_TYPE.a
-    }
-  ]
-};
+import { LINK_TYPE } from "../utils/linkType";
 
 export const USER_DROPDOWN = {
   name: "user-dropdown",

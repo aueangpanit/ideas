@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { LOGIN_DROPDOWN, USER_DROPDOWN } from "./dropdownContents";
+import { LOGIN_DROPDOWN } from "../../data/auth/loginDropdownOptions";
+import { USER_DROPDOWN } from "../../data/profile/profileDropdownOptions";
 
 class Navigation extends Component {
   renderProfilePicture() {}

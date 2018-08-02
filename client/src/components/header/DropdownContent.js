@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { LINK_TYPE } from "./dropdownContents";
+import { LINK_TYPE } from "../../data/utils/linkType";
 
 const renderItems = items => {
   return _.map(items, item => {

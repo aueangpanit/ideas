@@ -1,15 +1,26 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
+
 import M from "materialize-css";
 
-import { LOGIN_DROPDOWN } from "../header/dropdownContents";
+import { LOGIN_DROPDOWN } from "../../data/auth/loginDropdownOptions";
+
+import SubmitButton from "../utils/form/SubmitButton";
+import BackButton from "../utils/form/BackButton";
 
 class Signup extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   componentDidMount() {
     M.FormSelect.init(document.querySelectorAll("select"));
   }
+
   renderOptions() {
     return _.map(LOGIN_DROPDOWN.contents, option => {
       return (
@@ -20,36 +31,34 @@ class Signup extends Component {
     });
   }
 
+  onSubmit() {
+    const { authOptionValue } = this.props;
+    if (authOptionValue === "google") {
+      window.location.href = "/auth/google";
+    }
+  }
+
   render() {
+    const { handleSubmit } = this.props;
+
     return (
-      <div className="container" style={{ marginTop: "20px" }}>
-        <div className="row">
+      <div className="container">
+        <div className="row" style={{ paddingTop: "20px" }}>
           <div className="col s12">
-            <div className="row">
-              <div className="col s6">
-                <div className="input-field">
-                  <Field name="authMethod" component="select">
+            <form onSubmit={handleSubmit(this.onSubmit)}>
+              <div className="row">
+                <div className="input-field col s6">
+                  <Field name="authOption" component="select">
                     {this.renderOptions()}
                   </Field>
-                  <label>Authentication Method</label>
+                  <label>Materialize Select</label>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <button
-                onClick={this.props.onCancel}
-                className="grey darken-3 white-text btn-flat wave-effect"
-              >
-                Back
-              </button>
-              <a
-                href={`/auth/${this.props.formValue.authMethod}`}
-                className="blue darken-3 btn-flat right white-text wave-effect"
-              >
-                Next
-                <i className="material-icons right">done</i>
-              </a>
-            </div>
+              <div className="row">
+                <SubmitButton />
+                <BackButton link="/" />
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -58,14 +67,18 @@ class Signup extends Component {
 }
 
 function mapStateToProps(state) {
-  return { formValue: state.form.signupAuthMethod.values };
+  const selector = formValueSelector("authOption");
+  const authOptionValue = selector(state, "authOption");
+  return {
+    authOptionValue
+  };
 }
 
 Signup = connect(mapStateToProps)(Signup);
 
 export default reduxForm({
-  form: "signupAuthMethod",
+  form: "authOption",
   initialValues: {
-    authMethod: "google"
+    authOption: "google"
   }
 })(Signup);
