@@ -1,13 +1,7 @@
 import axios, { post } from "axios";
-import { FETCH_USER, IS_USERNAME_AVAILABLE } from "./types";
 
-export const fetchUser = () => async dispatch => {
-  const res = await axios.get("/api/current_user");
-  dispatch({
-    type: FETCH_USER,
-    payload: res.data
-  });
-};
+import { FETCH_USER } from "../auth/types";
+import { IS_USERNAME_AVAILABLE } from "./types";
 
 export const checkUsername = username => async dispatch => {
   var res = { data: null };

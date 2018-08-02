@@ -1,4 +1,4 @@
-import { IS_USERNAME_AVAILABLE } from '../actions/types';
+import { IS_USERNAME_AVAILABLE } from "../actions/newUserForm/types";
 
 export default function(state = null, action) {
   switch (action.type) {
