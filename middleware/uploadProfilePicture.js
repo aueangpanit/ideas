@@ -1,7 +1,8 @@
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 
-var bucketName = "lisit-dev";
+var bucketName =
+  process.env.NODE_ENV === "production" ? "lisit-prod" : "lisit-dev";
 var bucketRegion = "eu-west-2";
 var AWS = require("aws-sdk");
 AWS.config.update({ region: bucketRegion });

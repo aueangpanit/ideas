@@ -25,11 +25,13 @@ class Header extends Component {
   }
 
   render() {
+    const { auth } = this.props;
+
     return (
       <div>
         <DropdownContent
           id={HEADER}
-          content={this.props.auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
+          content={auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
         />
 
         <nav className="grey darken-4">
@@ -41,18 +43,18 @@ class Header extends Component {
               <i className="material-icons">menu</i>
             </a>
             <ul className="right hide-on-med-and-down">
-              <Navigation id={HEADER} auth={this.props.auth} />
+              <Navigation id={HEADER} auth={auth} />
             </ul>
           </div>
         </nav>
 
         <DropdownContent
           id={MOBILE_SIDEBAR}
-          content={this.props.auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
+          content={auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
         />
 
         <ul className="sidenav" id={MOBILE_SIDEBAR}>
-          <Navigation id={MOBILE_SIDEBAR} auth={this.props.auth} />
+          <Navigation id={MOBILE_SIDEBAR} auth={auth} />
         </ul>
       </div>
     );
