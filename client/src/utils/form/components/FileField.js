@@ -1,11 +1,15 @@
 import React from "react";
 
-export default ({ placeholderText, meta: { error, touched } }) => {
+export default ({ placeholderText, error, onChange }) => {
   return (
     <div className="file-field input-field col s6">
       <div className="btn">
         <span>File</span>
-        <input type="file" multiple />
+        <input
+          onChange={event => onChange(event.target.files)}
+          type="file"
+          multiple
+        />
       </div>
       <div className="file-path-wrapper">
         <input
@@ -15,7 +19,7 @@ export default ({ placeholderText, meta: { error, touched } }) => {
         />
       </div>
       <div className="red-text" style={{ marginBottom: "20px" }}>
-        {touched && error}
+        {error}
       </div>
     </div>
   );

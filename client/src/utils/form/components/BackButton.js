@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export function BackButton_Link({ link }) {
+export function LinkAsBackButton({ link }) {
   return (
     <Link className="waves-effect waves-light btn left" to={link}>
       Back
@@ -9,9 +9,13 @@ export function BackButton_Link({ link }) {
   );
 }
 
-export function BackButton_Button({ onClick }) {
+export function ButtonAsBackButton({ onClick }) {
   return (
-    <button onClick={onClick} className="waves-effect waves-light btn left">
+    <button
+      type="button"
+      onClick={onClick}
+      className="waves-effect waves-light btn left"
+    >
       Back
     </button>
   );

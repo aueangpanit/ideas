@@ -7,7 +7,7 @@ import M from "materialize-css";
 
 import utils from "../../utils";
 const { LOGIN_DROPDOWN } = utils.auth.data;
-const { SubmitButton, BackButton_Link } = utils.form.components;
+const { SubmitButton, LinkAsBackButton } = utils.form.components;
 
 class Signup extends Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class Signup extends Component {
               </div>
               <div className="row">
                 <SubmitButton />
-                <BackButton_Link link="/" />
+                <LinkAsBackButton link="/" />
               </div>
             </form>
           </div>

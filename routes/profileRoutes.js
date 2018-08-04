@@ -19,12 +19,12 @@ module.exports = app => {
     }
   );
 
-  app.get("/api/profile/is_username_avaliable/:username", async (req, res) => {
+  app.get("/api/profile/is_username_available/:username", async (req, res) => {
     const user = await User.findOne({ username: req.params.username });
     if (user) {
-      res.send(false);
+      res.send({ available: false });
     } else {
-      res.send(true);
+      res.send({ available: true });
     }
   });
 

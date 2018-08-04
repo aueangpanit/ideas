@@ -1,35 +1,14 @@
 import axios, { post } from "axios";
 
-import { FETCH_USER } from "../utils/auth/actionTypes";
-import { IS_USERNAME_AVAILABLE } from "./actionTypes";
+import utils from "../utils";
 
-export const checkUsername = username => async dispatch => {
-  var res = { data: null };
-  if (username) {
-    res = await axios.get(`/api/profile/is_username_avaliable/${username}`);
-  }
-  dispatch({
-    type: IS_USERNAME_AVAILABLE,
-    payload: Object.assign(
-      { checkUsernameLoading: false },
-      { usernameAvailable: res.data }
-    )
-  });
-};
-
-export const checkUsernameLoading = () => {
-  return {
-    type: IS_USERNAME_AVAILABLE,
-    payload: { checkUsernameLoading: true }
-  };
-};
+const { FETCH_USER } = utils.auth.actionTypes;
 
 export const newUserFormSubmit = (values, history) => async dispatch => {
   // update username
   const res = await axios.post("/api/profile/update/username", {
     username: values.username
   });
-
   // update profile picture
   if (values.file) {
     const url = "/api/profile/update/profile_picture";

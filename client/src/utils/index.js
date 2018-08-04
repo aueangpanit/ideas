@@ -6,11 +6,14 @@ import { USER_DROPDOWN } from "./profile/data/profileDropdownOptions";
 // Components
 import FileField from "./form/components/FileField";
 import {
-  BackButton_Button,
-  BackButton_Link
+  ButtonAsBackButton,
+  LinkAsBackButton
 } from "./form/components/BackButton";
 import SubmitButton from "./form/components/SubmitButton";
 import TextField from "./form/components/TextField";
+
+// Action Types
+import { FETCH_USER } from "./auth/actionTypes";
 
 // Actions
 import * as authActions from "./auth/actions";
@@ -23,6 +26,7 @@ export default {
   auth: {
     data: { LOGIN_DROPDOWN },
     actions: authActions,
+    actionTypes: { FETCH_USER },
     reducer: authReducer
   },
   profile: {
@@ -31,8 +35,8 @@ export default {
   form: {
     components: {
       FileField,
-      BackButton_Button,
-      BackButton_Link,
+      ButtonAsBackButton,
+      LinkAsBackButton,
       SubmitButton,
       TextField
     }
