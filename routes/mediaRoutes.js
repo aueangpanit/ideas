@@ -16,4 +16,14 @@ module.exports = app => {
       res.send(req.user);
     }
   });
+
+  app.get("/api/genre/available/:genre", async (req, res) => {
+    const genre = await Genre.findOne({ name: req.params.genre });
+
+    if (genre) {
+      res.send({ available: false });
+    } else {
+      res.send({ available: true });
+    }
+  });
 };

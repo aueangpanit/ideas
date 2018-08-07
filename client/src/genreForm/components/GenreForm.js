@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { reduxForm, Field, formValueSelector } from "redux-form";
+import {
+  reduxForm,
+  Field,
+  formValueSelector,
+  getFormSyncErrors,
+  getFormAsyncErrors
+} from "redux-form";
 
 import M from "materialize-css";
 
 import { genreFormSubmit } from "../actions";
+import validate from "./validate";
+import asyncValidate from "./asyncValidate";
 
 import PleaseLogin from "../../pleaseLogin";
 import utils from "../../utils";
@@ -17,6 +25,10 @@ class GenreForm extends Component {
     super(props);
 
     this.onSubmit = this.onSubmit.bind(this);
+
+    this.state = {
+      submitting: false
+    };
   }
 
   componentDidMount() {
@@ -26,11 +38,15 @@ class GenreForm extends Component {
   onSubmit() {
     const { genreFormSubmit, genreValue, history } = this.props;
 
+    this.setState({ submitting: true });
+
     genreFormSubmit(genreValue, history);
   }
 
   render() {
-    const { auth, handleSubmit } = this.props;
+    const { auth, handleSubmit, syncErrors, asyncErrors } = this.props;
+
+    const { submitting } = this.state;
 
     if (auth) {
       return (
@@ -43,7 +59,10 @@ class GenreForm extends Component {
                 </div>
                 <div className="row">
                   <LinkAsBackButton link="profile" />
-                  <SubmitButton />
+                  <SubmitButton
+                    error={syncErrors.genre || asyncErrors}
+                    submitting={submitting}
+                  />
                 </div>
               </form>
             </div>
@@ -56,25 +75,17 @@ class GenreForm extends Component {
   }
 }
 
-const validate = values => {
-  const error = {};
-
-  if (!values.genre) {
-    error.genre = "Please enter a genre.";
-  }
-
-  return error;
-};
-
 const mapStateToProps = state => {
   const { auth } = state;
 
-  const selector = formValueSelector("genreForm");
+  const selector = formValueSelector("newGenreForm");
   const genreValue = selector(state, "genre");
 
   return {
     auth,
-    genreValue
+    genreValue,
+    syncErrors: getFormSyncErrors("newGenreForm")(state),
+    asyncErrors: getFormAsyncErrors("newGenreForm")(state)
   };
 };
 
@@ -85,5 +96,7 @@ GenreForm = connect(
 
 export default reduxForm({
   validate,
-  form: "genreForm"
+  asyncValidate,
+  asyncChangeFields: ["genre"],
+  form: "newGenreForm"
 })(GenreForm);
