@@ -11,7 +11,7 @@ export default ({
   return (
     <div>
       <div className="input-field col s6">
-        <input {...input} id={id} type="text" className="validate" />
+        <input {...input} id={id} type="text" />
         <label className="active" htmlFor={id}>
           {label}
         </label>

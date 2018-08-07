@@ -1,14 +1,14 @@
 import React from "react";
 
-export default ({ text, error }) => {
+export default ({ text, error, submitting }) => {
   var btnClassName = "btn waves-effect waves-light right";
-  if (error) {
+  if (error || submitting) {
     btnClassName += " disabled";
   }
 
   return (
     <button className={btnClassName} type="submit" name="action">
-      {text || "Submit"}
+      {submitting ? "Submitting" : text || "Submit"}
       <i className="material-icons right">check</i>
     </button>
   );

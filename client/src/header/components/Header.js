@@ -18,10 +18,6 @@ class Header extends Component {
     M.Dropdown.init(document.querySelectorAll(".dropdown-trigger"), {
       hover: true
     });
-    M.Dropdown.init(document.querySelector("#header-dropdown-trigger"), {
-      hover: true,
-      constrainWidth: false
-    });
   }
 
   render() {
