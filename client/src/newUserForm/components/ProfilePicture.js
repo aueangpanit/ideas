@@ -3,6 +3,8 @@ import { reduxForm, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import M from "materialize-css";
+
 import validate from "./validate";
 import utils from "../../utils";
 
@@ -18,8 +20,13 @@ class ProfilePicture extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       profilePictureValue: null,
-      profilePictureError: ""
+      profilePictureError: "",
+      submitting: false
     };
+  }
+
+  componentDidMount() {
+    M.Materialbox.init(document.querySelectorAll(".materialboxed"), {});
   }
 
   validate(file) {
@@ -29,7 +36,7 @@ class ProfilePicture extends Component {
           profilePictureError:
             "This is not an image file. Please pick an image file."
         });
-      } else if (file.size > 1000000) {
+      } else if (file.size > 1024 * 1024) {
         this.setState({
           profilePictureError:
             "This file is too large. Please use a picture thats less than 1 Mb."
@@ -59,17 +66,50 @@ class ProfilePicture extends Component {
 
       newUserFormSubmit(values, history);
     }
+
+    this.setState({ submitting: true });
+  }
+
+  displayImage() {
+    const { profilePictureValue } = this.state;
+    const profilePictureBox = document.getElementById("profile-picture-box");
+
+    if (profilePictureBox) {
+      if (FileReader && profilePictureValue) {
+        var fr = new FileReader();
+        fr.onload = function() {
+          profilePictureBox.src = fr.result;
+        };
+        fr.readAsDataURL(profilePictureValue);
+      } else {
+        profilePictureBox.src =
+          window.location.origin + "/img/blank-profile-picture.png";
+      }
+    }
   }
 
   render() {
     const { handleSubmit, previousPage } = this.props;
-    const { profilePictureValue, profilePictureError } = this.state;
+    const { profilePictureValue, profilePictureError, submitting } = this.state;
 
     return (
       <div className="container">
         <div className="row" style={{ marginTop: "20px" }}>
           <div className="col s12">
             <form onSubmit={handleSubmit(this.onSubmit)}>
+              <div className="row">
+                <div className="container">
+                  <img
+                    id="profile-picture-box"
+                    alt="Profile"
+                    className="materialboxed"
+                    width="100"
+                    height="100"
+                    style={{ objectFit: "cover" }}
+                  />
+                  {this.displayImage()}
+                </div>
+              </div>
               <div className="row">
                 <FileField
                   placeholderText="Upload Profile Picture"
@@ -80,6 +120,8 @@ class ProfilePicture extends Component {
               <div className="row">
                 <ButtonAsBackButton onClick={previousPage} />
                 <SubmitButton
+                  id="submit-button"
+                  submitting={submitting}
                   text={profilePictureValue ? "Submit" : "Skip"}
                   error={profilePictureError}
                 />

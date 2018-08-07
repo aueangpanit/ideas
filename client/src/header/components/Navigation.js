@@ -19,7 +19,7 @@ class Navigation extends Component {
             style={{ width: "40px", paddingTop: "12px", marginLeft: "20px" }}
           >
             <img
-              src={`${S3_BUCKET}/profile_picture/${auth._id}`}
+              src={`${S3_BUCKET}/profile_picture/${auth._id}.png`}
               alt=""
               className="circle responsive-img"
             />
