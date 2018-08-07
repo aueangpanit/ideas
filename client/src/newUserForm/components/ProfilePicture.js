@@ -21,6 +21,9 @@ class ProfilePicture extends Component {
     this.state = {
       profilePictureValue: null,
       profilePictureError: "",
+      imagePreviewUrl: `${
+        window.location.origin
+      }/img/blank-profile-picture.png`,
       submitting: false
     };
   }
@@ -50,8 +53,28 @@ class ProfilePicture extends Component {
   }
 
   onChange(files) {
-    this.setState({ profilePictureValue: files[0] });
-    this.validate(files[0]);
+    const fr = new FileReader();
+    const file = files[0];
+
+    this.setState({
+      profilePictureValue: file
+    });
+
+    if (file) {
+      fr.onloadend = () => {
+        this.setState({
+          imagePreviewUrl: fr.result
+        });
+      };
+      fr.readAsDataURL(file);
+    } else {
+      this.setState({
+        imagePreviewUrl: `${
+          window.location.origin
+        }/img/blank-profile-picture.png`
+      });
+    }
+    this.validate(file);
   }
 
   onSubmit() {
@@ -70,27 +93,14 @@ class ProfilePicture extends Component {
     this.setState({ submitting: true });
   }
 
-  displayImage() {
-    const { profilePictureValue } = this.state;
-    const profilePictureBox = document.getElementById("profile-picture-box");
-
-    if (profilePictureBox) {
-      if (FileReader && profilePictureValue) {
-        var fr = new FileReader();
-        fr.onload = function() {
-          profilePictureBox.src = fr.result;
-        };
-        fr.readAsDataURL(profilePictureValue);
-      } else {
-        profilePictureBox.src =
-          window.location.origin + "/img/blank-profile-picture.png";
-      }
-    }
-  }
-
   render() {
     const { handleSubmit, previousPage } = this.props;
-    const { profilePictureValue, profilePictureError, submitting } = this.state;
+    const {
+      profilePictureValue,
+      profilePictureError,
+      imagePreviewUrl,
+      submitting
+    } = this.state;
 
     return (
       <div className="container">
@@ -106,8 +116,8 @@ class ProfilePicture extends Component {
                     width="100"
                     height="100"
                     style={{ objectFit: "cover" }}
+                    src={imagePreviewUrl}
                   />
-                  {this.displayImage()}
                 </div>
               </div>
               <div className="row">

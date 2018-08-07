@@ -3,7 +3,6 @@ import React from "react";
 import Loading from "./Loading";
 
 export default ({
-  id,
   input,
   label,
   meta: { asyncValidating, touched, error }
@@ -11,10 +10,8 @@ export default ({
   return (
     <div>
       <div className="input-field col s6">
-        <input {...input} id={id} type="text" />
-        <label className="active" htmlFor={id}>
-          {label}
-        </label>
+        <input {...input} type="text" />
+        <label>{label}</label>
         <div className="red-text" style={{ marginBottom: "20px" }}>
           {touched && error}
         </div>
