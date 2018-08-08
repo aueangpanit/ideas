@@ -3,21 +3,26 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import M from "materialize-css";
 
-import DropdownContent from "./DropdownContent";
 import Navigation from "./Navigation";
-import utils from "../../utils";
+import DropdownContents from "./DropdownContents";
 
-const { LOGIN_DROPDOWN } = utils.auth.data;
-const { USER_DROPDOWN } = utils.profile.data;
 const HEADER = "header";
 const MOBILE_SIDEBAR = "mobile-sidebar";
 
 class Header extends Component {
   componentDidMount() {
-    M.Sidenav.init(document.querySelectorAll(".sidenav"), {});
+    this.initMaterializeComponents();
+  }
+
+  componentDidUpdate() {
+    this.initMaterializeComponents();
+  }
+
+  initMaterializeComponents() {
     M.Dropdown.init(document.querySelectorAll(".dropdown-trigger"), {
       hover: true
     });
+    M.Sidenav.init(document.querySelectorAll(".sidenav"), {});
   }
 
   render() {
@@ -25,17 +30,14 @@ class Header extends Component {
 
     return (
       <div>
-        <DropdownContent
-          id={HEADER}
-          content={auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
-        />
+        <DropdownContents id={HEADER} auth={auth} />
 
-        <nav className="grey darken-4">
+        <nav>
           <div className="nav-wrapper container">
             <Link to="/" className="brand-logo">
               lisit
             </Link>
-            <a data-target={MOBILE_SIDEBAR} className="sidenav-trigger">
+            <a data-target="mobile-sidebar" className="sidenav-trigger">
               <i className="material-icons">menu</i>
             </a>
             <ul className="right hide-on-med-and-down">
@@ -44,10 +46,7 @@ class Header extends Component {
           </div>
         </nav>
 
-        <DropdownContent
-          id={MOBILE_SIDEBAR}
-          content={auth ? USER_DROPDOWN : LOGIN_DROPDOWN}
-        />
+        <DropdownContents id={MOBILE_SIDEBAR} auth={auth} />
 
         <ul className="sidenav" id={MOBILE_SIDEBAR}>
           <Navigation id={MOBILE_SIDEBAR} auth={auth} />

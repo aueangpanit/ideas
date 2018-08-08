@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import utils from "../../utils";
 import config from "../../config";
+import CONTRIBUTE_DROPDOWN from "../data/contributeDropdownOptions";
+import DropdownTrigger from "./DropdownTrigger";
 
 const { LOGIN_DROPDOWN } = utils.auth.data;
 const { USER_DROPDOWN } = utils.profile.data;
@@ -15,6 +17,13 @@ class Navigation extends Component {
     return (
       <div>
         <li>
+          <DropdownTrigger
+            id={id}
+            content={CONTRIBUTE_DROPDOWN}
+            text="Contribute"
+          />
+        </li>
+        <li>
           <div
             style={{ width: "40px", paddingTop: "12px", marginLeft: "20px" }}
           >
@@ -26,13 +35,11 @@ class Navigation extends Component {
           </div>
         </li>
         <li>
-          <a
-            className="dropdown-trigger"
-            data-target={`${id}-${USER_DROPDOWN.name}-content`}
-          >
-            {auth.username || "User"}
-            <i className="material-icons right">arrow_drop_down</i>
-          </a>
+          <DropdownTrigger
+            id={id}
+            content={USER_DROPDOWN}
+            text={auth.username || "User"}
+          />
         </li>
       </div>
     );
@@ -46,14 +53,7 @@ class Navigation extends Component {
           <Link to="/signup">Signup</Link>
         </li>
         <li>
-          <a
-            id={`${id}-dropdown-trigger`}
-            className="dropdown-trigger"
-            data-target={`${id}-${LOGIN_DROPDOWN.name}-content`}
-          >
-            Login
-            <i className="material-icons right">arrow_drop_down</i>
-          </a>
+          <DropdownTrigger id={id} content={LOGIN_DROPDOWN} text="Login" />
         </li>
       </div>
     );
