@@ -42,8 +42,11 @@ module.exports = app => {
       PAGE_SIZE
     );
 
-    const last_id = genres[genres.length - 1].id;
-
-    res.send({ genres, last_id });
+    if (genres.length) {
+      const last_id = genres[genres.length - 1].id;
+      res.send({ genres, last_id });
+    } else {
+      res.send({ genres, last_id: req.params.last_id });
+    }
   });
 };

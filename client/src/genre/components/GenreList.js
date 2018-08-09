@@ -2,6 +2,8 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import Fade from "react-reveal/Fade";
+
 import { fetchGenres } from "../actions";
 
 class GenreList extends Component {
@@ -36,7 +38,8 @@ class GenreList extends Component {
         window.innerHeight + window.scrollY >=
           document.body.offsetHeight - 500 &&
         genre.genres.length &&
-        !loading
+        !loading &&
+        !genre.reachedEnd
       ) {
         this.setState({ loading: true });
         await fetchGenres(genre.last_id);
@@ -51,11 +54,13 @@ class GenreList extends Component {
     if (genre) {
       return _.map(genre.genres, genre => {
         return (
-          <div key={genre.name} className="col s12">
-            <div className="card-panel teal">
-              <span className="white-text">{genre.name}</span>
+          <Fade bottom>
+            <div key={genre.name} className="col s12">
+              <div className="card-panel teal">
+                <span className="white-text">{genre.name}</span>
+              </div>
             </div>
-          </div>
+          </Fade>
         );
       });
     }
@@ -84,12 +89,19 @@ class GenreList extends Component {
   }
 
   render() {
+    const {
+      genre: { reachedEnd }
+    } = this.props;
+
     return (
       <React.Fragment>
         {this.renderLoading()}
         <div className="container">
           <h4 className="red-text text-lighten-2">Genre</h4>
           <div className="row">{this.renderGenres()}</div>
+          <div className="row center-align">
+            {reachedEnd ? "You have reached the end!" : ""}
+          </div>
         </div>
       </React.Fragment>
     );
