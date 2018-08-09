@@ -7,12 +7,18 @@ import {
 } from "redux-form";
 import { connect } from "react-redux";
 
+import M from "materialize-css";
+
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
 import utils from "../../utils";
 const { TextField, SubmitButton } = utils.form.components;
 
 class Username extends Component {
+  componentDidMount() {
+    M.updateTextFields();
+  }
+
   render() {
     const { handleSubmit, syncErrors, asyncErrors } = this.props;
 
@@ -22,12 +28,7 @@ class Username extends Component {
           <div className="col s12">
             <form onSubmit={handleSubmit}>
               <div className="row">
-                <Field
-                  name="username"
-                  label="Username"
-                  component={TextField}
-                  id="new-user-form-username-field"
-                />
+                <Field name="username" label="Username" component={TextField} />
               </div>
               <div className="row">
                 <SubmitButton

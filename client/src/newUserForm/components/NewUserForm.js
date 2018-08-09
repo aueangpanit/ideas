@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Username from "./Username";
 import ProfilePicture from "./ProfilePicture";
+import PleaseLogin from "../../pleaseLogin";
 
 class NewUserForm extends Component {
   constructor(props) {
@@ -26,15 +28,28 @@ class NewUserForm extends Component {
   }
 
   render() {
+    const { auth } = this.props;
     const { page } = this.state;
 
-    return (
-      <div>
-        {page === 1 && <Username onSubmit={this.nextPage} />}
-        {page === 2 && <ProfilePicture previousPage={this.previousPage} />}
-      </div>
-    );
+    if (auth) {
+      return (
+        <div>
+          {page === 1 && <Username onSubmit={this.nextPage} />}
+          {page === 2 && <ProfilePicture previousPage={this.previousPage} />}
+        </div>
+      );
+    }
+
+    return <PleaseLogin />;
   }
 }
 
-export default NewUserForm;
+const mapStateToProps = state => {
+  const { auth } = state;
+
+  return {
+    auth
+  };
+};
+
+export default connect(mapStateToProps)(NewUserForm);

@@ -8,7 +8,10 @@ import Header from "../../header";
 import Landing from "../../landing";
 import Profile from "../../profile";
 import newUserForm from "../../newUserForm";
+import genre from "../../genre";
+
 const { Signup, NewUserForm } = newUserForm;
+const { GenreList, GenreForm } = genre;
 
 const { fetchUser } = utils.auth.actions;
 
@@ -25,7 +28,9 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/new_user_form" component={NewUserForm} />
+          <Route exact path="/user/new" component={NewUserForm} />
+          <Route exact path="/genre" component={GenreList} />
+          <Route exact path="/genre/new" component={GenreForm} />
         </div>
       </BrowserRouter>
     );

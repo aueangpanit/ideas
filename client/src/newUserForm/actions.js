@@ -24,6 +24,7 @@ export const newUserFormSubmit = (values, history) => async dispatch => {
   }
 
   history.push("/profile");
+
   dispatch({
     type: FETCH_USER,
     payload: res.data
