@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Genre = mongoose.model("Genre");
 
+const PAGE_SIZE = 10;
+
 module.exports = app => {
   app.post("/api/genre/new", async (req, res) => {
     const existingGenre = await Genre.findOne({ name: req.body.genre });
@@ -25,5 +27,23 @@ module.exports = app => {
     } else {
       res.send({ available: true });
     }
+  });
+
+  app.get("/api/genre/", async (req, res) => {
+    const genres = await Genre.find().limit(PAGE_SIZE);
+
+    const last_id = genres[genres.length - 1].id;
+
+    res.send({ genres, last_id });
+  });
+
+  app.get("/api/genre/:last_id", async (req, res) => {
+    const genres = await Genre.find({ _id: { $gt: req.params.last_id } }).limit(
+      PAGE_SIZE
+    );
+
+    const last_id = genres[genres.length - 1].id;
+
+    res.send({ genres, last_id });
   });
 };
