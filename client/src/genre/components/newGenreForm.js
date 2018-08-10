@@ -58,7 +58,7 @@ class newGenreForm extends Component {
                   <Field name="genre" label="Genre" component={TextField} />
                 </div>
                 <div className="row">
-                  <LinkAsBackButton link="profile" />
+                  <LinkAsBackButton link="/profile" />
                   <SubmitButton
                     error={syncErrors.genre || asyncErrors}
                     submitting={submitting}
