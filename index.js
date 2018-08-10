@@ -7,6 +7,8 @@ const keys = require("./config/keys");
 
 require("./models/User");
 require("./models/Genre");
+require("./models/Movie");
+
 require("./services/passport");
 
 mongoose.connect(
@@ -28,7 +30,8 @@ app.use(passport.session());
 
 require("./routes/authRoutes")(app);
 require("./routes/profileRoutes")(app);
-require("./routes/mediaRoutes")(app);
+require("./routes/genreRoutes")(app);
+require("./routes/movieRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

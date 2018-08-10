@@ -1,9 +1,9 @@
-import GenreForm from "./components/GenreForm";
+import newGenreForm from "./components/newGenreForm";
 import GenreList from "./components/GenreList";
 import reducers from "./reducers";
 
 export default {
   GenreList,
-  GenreForm,
+  newGenreForm,
   reducers
 };

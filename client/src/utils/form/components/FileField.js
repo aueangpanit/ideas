@@ -1,5 +1,7 @@
 import React from "react";
 
+import Error from "./Error";
+
 export default ({ placeholderText, error, onChange }) => {
   return (
     <div className="file-field input-field col s6">
@@ -18,9 +20,7 @@ export default ({ placeholderText, error, onChange }) => {
           placeholder={placeholderText}
         />
       </div>
-      <div className="red-text" style={{ marginBottom: "20px" }}>
-        {error}
-      </div>
+      <Error touched={true} error={error} />
     </div>
   );
 };

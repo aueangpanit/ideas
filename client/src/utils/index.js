@@ -11,6 +11,8 @@ import {
 } from "./form/components/BackButton";
 import SubmitButton from "./form/components/SubmitButton";
 import TextField from "./form/components/TextField";
+import TextArea from "./form/components/TextArea";
+import DatePicker from "./form/components/DatePicker";
 
 // Action Types
 import { FETCH_USER } from "./auth/actionTypes";
@@ -19,7 +21,7 @@ import { FETCH_USER } from "./auth/actionTypes";
 import * as authActions from "./auth/actions";
 
 // Reducers
-import authReducer from "./auth/reducer";
+import authReducers from "./auth/reducers";
 
 export default {
   data: { LINK_TYPE },
@@ -27,7 +29,7 @@ export default {
     data: { LOGIN_DROPDOWN },
     actions: authActions,
     actionTypes: { FETCH_USER },
-    reducer: authReducer
+    reducers: authReducers
   },
   profile: {
     data: { USER_DROPDOWN }
@@ -38,7 +40,9 @@ export default {
       ButtonAsBackButton,
       LinkAsBackButton,
       SubmitButton,
-      TextField
+      TextField,
+      TextArea,
+      DatePicker
     }
   }
 };

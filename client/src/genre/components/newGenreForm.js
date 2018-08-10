@@ -20,7 +20,7 @@ import utils from "../../utils";
 
 const { TextField, LinkAsBackButton, SubmitButton } = utils.form.components;
 
-class GenreForm extends Component {
+class newGenreForm extends Component {
   constructor(props) {
     super(props);
 
@@ -89,14 +89,14 @@ const mapStateToProps = state => {
   };
 };
 
-GenreForm = connect(
+newGenreForm = connect(
   mapStateToProps,
   { genreFormSubmit }
-)(withRouter(GenreForm));
+)(withRouter(newGenreForm));
 
 export default reduxForm({
   validate,
   asyncValidate,
   asyncChangeFields: ["genre"],
   form: "newGenreForm"
-})(GenreForm);
+})(newGenreForm);
