@@ -6,11 +6,11 @@ import { reduxForm, Field, formValueSelector } from "redux-form";
 
 import M from "materialize-css";
 
-import utils from "../../utils";
+import utils from "../../../utils";
 import validate from "./validate";
-import * as actions from "../actions";
+import * as actions from "../../actions";
 
-import PleaseLogin from "../../pleaseLogin";
+import PleaseLogin from "../../../pleaseLogin";
 import UniqueMovieComfirmation from "./UniqueMovieComfirmation";
 
 const {

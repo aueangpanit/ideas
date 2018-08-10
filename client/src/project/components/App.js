@@ -12,8 +12,8 @@ import genre from "../../genre";
 import movie from "../../movie";
 
 const { Signup, NewUserForm } = newUserForm;
-const { GenreList, newGenreForm } = genre;
-const { NewMovieForm } = movie;
+const { GenreList, NewGenreForm } = genre;
+const { NewMovieForm, NewMovieInfoForm } = movie;
 
 const { fetchUser } = utils.auth.actions;
 
@@ -32,8 +32,9 @@ class App extends Component {
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/user/new" component={NewUserForm} />
           <Route exact path="/genre" component={GenreList} />
-          <Route exact path="/genre/new" component={newGenreForm} />
+          <Route exact path="/genre/new" component={NewGenreForm} />
           <Route exact path="/movie/new" component={NewMovieForm} />
+          <Route exact path="/movie/new/info" component={NewMovieInfoForm} />
         </div>
       </BrowserRouter>
     );
