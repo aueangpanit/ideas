@@ -1,62 +1,40 @@
-import React, { Component } from "react";
-import {
-  reduxForm,
-  Field,
-  getFormSyncErrors,
-  getFormAsyncErrors
-} from "redux-form";
-import { connect } from "react-redux";
+import React from "react";
 
-import M from "materialize-css";
+import { Field } from "redux-form";
 
-import validate from "./validate";
-import asyncValidate from "./asyncValidate";
 import utils from "../../utils";
+
 const { TextField, SubmitButton } = utils.form.components;
 
-class Username extends Component {
-  componentDidMount() {
-    M.updateTextFields();
-  }
-
-  render() {
-    const { handleSubmit, syncErrors, asyncErrors } = this.props;
-
-    return (
-      <div className="container">
-        <div className="row" style={{ paddingTop: "20px" }}>
-          <div className="col s12">
-            <form onSubmit={handleSubmit}>
-              <div className="row">
-                <Field name="username" label="Username" component={TextField} />
-              </div>
-              <div className="row">
-                <SubmitButton
-                  text="Next"
-                  error={syncErrors.username || asyncErrors}
-                />
-              </div>
-            </form>
-          </div>
+export default ({
+  handleSubmit,
+  fieldName,
+  fieldLabel,
+  submitButtonText,
+  syncErrors,
+  asyncErrors
+}) => {
+  return (
+    <div className="container">
+      <div className="row" style={{ paddingTop: "20px" }}>
+        <div className="col s12">
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <Field
+                name={fieldName}
+                label={fieldLabel}
+                component={TextField}
+              />
+            </div>
+            <div className="row">
+              <SubmitButton
+                text={submitButtonText}
+                error={syncErrors || asyncErrors}
+              />
+            </div>
+          </form>
         </div>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    syncErrors: getFormSyncErrors("newUserForm")(state),
-    asyncErrors: getFormAsyncErrors("newUserForm")(state)
-  };
+    </div>
+  );
 };
-
-Username = connect(mapStateToProps)(Username);
-
-export default reduxForm({
-  validate,
-  asyncValidate,
-  asyncChangeFields: ["username"],
-  form: "newUserForm",
-  destroyOnUnmount: false
-})(Username);
