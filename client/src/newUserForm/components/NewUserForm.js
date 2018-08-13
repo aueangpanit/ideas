@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Username from "./UsernameContainer";
+import Username from "./Username";
 import ProfilePicture from "./ProfilePicture";
 import PleaseLogin from "../../pleaseLogin";
 

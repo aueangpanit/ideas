@@ -1,40 +1,50 @@
-import React from "react";
+import React, { Component } from "react";
+import { reduxForm, getFormSyncErrors, getFormAsyncErrors } from "redux-form";
+import { connect } from "react-redux";
 
-import { Field } from "redux-form";
+import M from "materialize-css";
 
 import utils from "../../utils";
 
-const { TextField, SubmitButton } = utils.form.components;
+import validate from "./validate";
+import asyncValidate from "./asyncValidate";
 
-export default ({
-  handleSubmit,
-  fieldName,
-  fieldLabel,
-  submitButtonText,
-  syncErrors,
-  asyncErrors
-}) => {
-  return (
-    <div className="container">
-      <div className="row" style={{ paddingTop: "20px" }}>
-        <div className="col s12">
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              <Field
-                name={fieldName}
-                label={fieldLabel}
-                component={TextField}
-              />
-            </div>
-            <div className="row">
-              <SubmitButton
-                text={submitButtonText}
-                error={syncErrors || asyncErrors}
-              />
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+const { TextFormNoBackButton } = utils.form.components;
+
+class Username extends Component {
+  componentDidMount() {
+    M.updateTextFields();
+  }
+
+  render() {
+    const { handleSubmit, syncErrors, asyncErrors } = this.props;
+
+    return (
+      <TextFormNoBackButton
+        onSubmit={handleSubmit}
+        fieldName="username"
+        fieldLabel="Username"
+        submitButtonText="Next"
+        syncErrors={syncErrors.username}
+        asyncErrors={asyncErrors}
+      />
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    syncErrors: getFormSyncErrors("newUserForm")(state),
+    asyncErrors: getFormAsyncErrors("newUserForm")(state)
+  };
 };
+
+Username = connect(mapStateToProps)(Username);
+
+export default reduxForm({
+  validate,
+  asyncValidate,
+  asyncChangeFields: ["username"],
+  form: "newUserForm",
+  destroyOnUnmount: false
+})(Username);

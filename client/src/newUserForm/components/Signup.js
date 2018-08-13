@@ -1,13 +1,15 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { reduxForm, Field, formValueSelector } from "redux-form";
+import { reduxForm, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 
 import M from "materialize-css";
 
 import utils from "../../utils";
+
+const { DropdownForm } = utils.form.components;
+
 const { LOGIN_DROPDOWN } = utils.auth.data;
-const { SubmitButton, LinkAsBackButton } = utils.form.components;
 
 class Signup extends Component {
   constructor(props) {
@@ -40,26 +42,13 @@ class Signup extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <div className="container">
-        <div className="row" style={{ paddingTop: "20px" }}>
-          <div className="col s12">
-            <form onSubmit={handleSubmit(this.onSubmit)}>
-              <div className="row">
-                <div className="input-field col s6">
-                  <Field name="authOption" component="select">
-                    {this.renderOptions()}
-                  </Field>
-                  <label>Materialize Select</label>
-                </div>
-              </div>
-              <div className="row">
-                <SubmitButton />
-                <LinkAsBackButton link="/" />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <DropdownForm
+        onSubmit={handleSubmit(this.onSubmit)}
+        fieldName="authOption"
+        fieldLabel="Login Option"
+        fieldOptions={this.renderOptions()}
+        backButtonLink="/"
+      />
     );
   }
 }

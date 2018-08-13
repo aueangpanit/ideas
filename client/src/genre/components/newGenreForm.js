@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   reduxForm,
-  Field,
   formValueSelector,
   getFormSyncErrors,
   getFormAsyncErrors
@@ -18,7 +17,7 @@ import asyncValidate from "./asyncValidate";
 import PleaseLogin from "../../pleaseLogin";
 import utils from "../../utils";
 
-const { TextField, LinkAsBackButton, SubmitButton } = utils.form.components;
+const { TextForm } = utils.form.components;
 
 class newGenreForm extends Component {
   constructor(props) {
@@ -50,24 +49,15 @@ class newGenreForm extends Component {
 
     if (auth) {
       return (
-        <div className="container">
-          <div className="row">
-            <div className="col s12">
-              <form onSubmit={handleSubmit(this.onSubmit)}>
-                <div className="row">
-                  <Field name="genre" label="Genre" component={TextField} />
-                </div>
-                <div className="row">
-                  <LinkAsBackButton link="/profile" />
-                  <SubmitButton
-                    error={syncErrors.genre || asyncErrors}
-                    submitting={submitting}
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <TextForm
+          onSubmit={handleSubmit(this.onSubmit)}
+          fieldName="genre"
+          fieldLabel="Genre"
+          backButtonLink="/profile"
+          submitting={submitting}
+          syncErrors={syncErrors.genre}
+          asyncErrors={asyncErrors}
+        />
       );
     }
 

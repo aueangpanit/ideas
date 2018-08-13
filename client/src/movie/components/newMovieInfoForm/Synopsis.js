@@ -7,7 +7,7 @@ import M from "materialize-css";
 import utils from "../../../utils";
 import validate from "./validate";
 
-const { TextArea, SubmitButton } = utils.form.components;
+const { TextAreaForm } = utils.form.components;
 
 class Synopsis extends Component {
   componentDidMount() {
@@ -18,25 +18,13 @@ class Synopsis extends Component {
     const { handleSubmit, synopsisValue } = this.props;
 
     return (
-      <div className="container">
-        <div className="row" style={{ paddingTop: "20px" }}>
-          <div className="col s12">
-            <form onSubmit={handleSubmit}>
-              <div className="row">
-                <Field
-                  name="synopsis"
-                  component={TextArea}
-                  label="Synopsis"
-                  dataLength="2000"
-                />
-              </div>
-              <div className="row">
-                <SubmitButton text={synopsisValue ? "Next" : "Skip"} />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <TextAreaForm
+        onSubmit={handleSubmit}
+        fieldName="synopsis"
+        fieldLabel="Synopsis"
+        dataLength={"2000"}
+        submitButtonText={synopsisValue ? "Next" : "Skip"}
+      />
     );
   }
 }

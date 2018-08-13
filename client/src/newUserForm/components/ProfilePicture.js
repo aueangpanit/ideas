@@ -6,11 +6,11 @@ import { withRouter } from "react-router-dom";
 import M from "materialize-css";
 
 import validate from "./validate";
-import utils from "../../utils";
-
 import { newUserFormSubmit } from "../actions";
 
-const { FileField, ButtonAsBackButton, SubmitButton } = utils.form.components;
+import utils from "../../utils";
+
+const { PictureForm } = utils.form.components;
 
 class ProfilePicture extends Component {
   constructor(props) {
@@ -61,11 +61,12 @@ class ProfilePicture extends Component {
     });
 
     if (file) {
-      fr.onloadend = () => {
-        this.setState({
-          imagePreviewUrl: fr.result
-        });
-      };
+      if (file.type.substring(0, 5) === "image" && file.size < 1024 * 1024)
+        fr.onloadend = () => {
+          this.setState({
+            imagePreviewUrl: fr.result
+          });
+        };
       fr.readAsDataURL(file);
     } else {
       this.setState({
@@ -102,44 +103,27 @@ class ProfilePicture extends Component {
       submitting
     } = this.state;
 
+    const img = {
+      id: "profile-picture-box",
+      alt: "Profile",
+      src: imagePreviewUrl
+    };
+
     return (
-      <div className="container">
-        <div className="row" style={{ marginTop: "20px" }}>
-          <div className="col s12">
-            <form onSubmit={handleSubmit(this.onSubmit)}>
-              <div className="row">
-                <div className="container">
-                  <img
-                    id="profile-picture-box"
-                    alt="Profile"
-                    className="materialboxed"
-                    width="100"
-                    height="100"
-                    style={{ objectFit: "cover" }}
-                    src={imagePreviewUrl}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <FileField
-                  placeholderText="Upload Profile Picture"
-                  onChange={this.onChange}
-                  error={profilePictureError}
-                />
-              </div>
-              <div className="row">
-                <ButtonAsBackButton onClick={previousPage} />
-                <SubmitButton
-                  id="submit-button"
-                  submitting={submitting}
-                  text={profilePictureValue ? "Submit" : "Skip"}
-                  error={profilePictureError}
-                />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <PictureForm
+        onSubmit={handleSubmit(this.onSubmit)}
+        img={img}
+        fileField={{
+          placeholderText: "Upload Profile Picture",
+          onChange: this.onChange
+        }}
+        backButton={{ onClick: previousPage }}
+        submitButton={{
+          submitting,
+          text: profilePictureValue ? "Submit" : "Skip"
+        }}
+        error={profilePictureError}
+      />
     );
   }
 }

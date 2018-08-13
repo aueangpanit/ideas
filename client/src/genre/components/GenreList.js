@@ -6,6 +6,10 @@ import Fade from "react-reveal/Fade";
 
 import { fetchGenres } from "../actions";
 
+import utils from "../../utils";
+
+const { List } = utils.list.components;
+
 class GenreList extends Component {
   constructor(props) {
     super(props);
@@ -54,8 +58,8 @@ class GenreList extends Component {
     if (genre) {
       return _.map(genre.genres, genre => {
         return (
-          <Fade bottom>
-            <div key={genre.name} className="col s12">
+          <Fade key={genre.name} bottom>
+            <div className="col s12">
               <div className="card-panel teal">
                 <span className="white-text">{genre.name}</span>
               </div>
@@ -66,44 +70,20 @@ class GenreList extends Component {
     }
   }
 
-  renderLoading() {
-    const { loading } = this.state;
-
-    if (loading) {
-      return (
-        <div
-          className="progress"
-          style={{
-            paddingBottom: "0px",
-            marginBottom: "0px",
-            position: "fixed",
-            bottom: "0px"
-          }}
-        >
-          <div className="indeterminate" />
-        </div>
-      );
-    }
-
-    return <div />;
-  }
-
   render() {
     const {
       genre: { reachedEnd }
     } = this.props;
 
+    const { loading } = this.state;
+
     return (
-      <React.Fragment>
-        {this.renderLoading()}
-        <div className="container">
-          <h4 className="red-text text-lighten-2">Genre</h4>
-          <div className="row">{this.renderGenres()}</div>
-          <div className="row center-align">
-            {reachedEnd ? "You have reached the end!" : ""}
-          </div>
-        </div>
-      </React.Fragment>
+      <List
+        loading={loading}
+        title="Genres"
+        listItems={this.renderGenres()}
+        reachedEnd={reachedEnd}
+      />
     );
   }
 }

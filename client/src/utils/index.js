@@ -4,15 +4,25 @@ import { LOGIN_DROPDOWN } from "./auth/data/loginDropdownOptions";
 import { USER_DROPDOWN } from "./profile/data/profileDropdownOptions";
 
 // Components
-import FileField from "./form/components/FileField";
+// Components - Form
+import DropdownForm from "./form/components/DropdownForm";
+import PictureForm from "./form/components/PictureForm";
+import { TextForm, TextFormNoBackButton } from "./form/components/TextForm";
+import TextFieldDatePickerForm from "./form/components/TextFieldDatePickerForm";
+import TextAreaForm from "./form/components/TextAreaForm";
+// Components - Form - Snippets
+import FileField from "./form/components/snippets/FileField";
 import {
   ButtonAsBackButton,
   LinkAsBackButton
-} from "./form/components/BackButton";
-import SubmitButton from "./form/components/SubmitButton";
-import TextField from "./form/components/TextField";
-import TextArea from "./form/components/TextArea";
-import DatePicker from "./form/components/DatePicker";
+} from "./form/components/snippets/BackButton";
+import SubmitButton from "./form/components/snippets/SubmitButton";
+import TextField from "./form/components/snippets/TextField";
+import TextArea from "./form/components/snippets/TextArea";
+import DatePicker from "./form/components/snippets/DatePicker";
+import Modal from "./form/components/snippets/Modal";
+// Components - List
+import List from "./list/components/List";
 
 // Action Types
 import { FETCH_USER } from "./auth/actionTypes";
@@ -36,13 +46,27 @@ export default {
   },
   form: {
     components: {
-      FileField,
-      ButtonAsBackButton,
-      LinkAsBackButton,
-      SubmitButton,
-      TextField,
-      TextArea,
-      DatePicker
+      snippets: {
+        FileField,
+        ButtonAsBackButton,
+        LinkAsBackButton,
+        SubmitButton,
+        TextField,
+        TextArea,
+        DatePicker,
+        Modal
+      },
+      DropdownForm,
+      PictureForm,
+      TextForm,
+      TextFormNoBackButton,
+      TextFieldDatePickerForm,
+      TextAreaForm
+    }
+  },
+  list: {
+    components: {
+      List
     }
   }
 };
