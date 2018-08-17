@@ -1,4 +1,4 @@
-import { CHECK_MOVIE_AVAILABLE, NEW_MOVIE_SUBMIT } from "./actionTypes";
+import { CHECK_MOVIE_AVAILABLE, FETCH_MOVIE } from "./actionTypes";
 
 export default (
   state = {
@@ -13,8 +13,8 @@ export default (
       return {
         newMovieForm: action.payload
       };
-    case NEW_MOVIE_SUBMIT:
-      return state;
+    case FETCH_MOVIE:
+      return { currentMovie: action.payload.movie };
     default:
       return state;
   }

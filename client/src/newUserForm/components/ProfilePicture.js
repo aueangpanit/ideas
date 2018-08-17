@@ -3,8 +3,6 @@ import { reduxForm, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import M from "materialize-css";
-
 import validate from "./validate";
 import { newUserFormSubmit } from "../actions";
 
@@ -28,28 +26,22 @@ class ProfilePicture extends Component {
     };
   }
 
-  componentDidMount() {
-    M.Materialbox.init(document.querySelectorAll(".materialboxed"), {});
-  }
-
   validate(file) {
+    var profilePictureError = "";
+
     if (file) {
       if (file.type.substring(0, 5) !== "image") {
-        this.setState({
-          profilePictureError:
-            "This is not an image file. Please pick an image file."
-        });
+        profilePictureError =
+          "This is not an image file. Please pick an image file.";
       } else if (file.size > 1024 * 1024) {
-        this.setState({
-          profilePictureError:
-            "This file is too large. Please use a picture thats less than 1 Mb."
-        });
-      } else {
-        this.setState({ profilePictureError: null });
+        profilePictureError =
+          "This file is too large. Please use a picture thats less than 1 Mb.";
       }
-    } else {
-      this.setState({ profilePictureError: null });
     }
+
+    this.setState({ profilePictureError });
+
+    return profilePictureError;
   }
 
   onChange(files) {
@@ -61,7 +53,9 @@ class ProfilePicture extends Component {
     });
 
     if (file) {
-      if (file.type.substring(0, 5) === "image" && file.size < 1024 * 1024)
+      const error = this.validate(file);
+
+      if (!error)
         fr.onloadend = () => {
           this.setState({
             imagePreviewUrl: fr.result
@@ -75,7 +69,6 @@ class ProfilePicture extends Component {
         }/img/blank-profile-picture.png`
       });
     }
-    this.validate(file);
   }
 
   onSubmit() {
@@ -103,16 +96,14 @@ class ProfilePicture extends Component {
       submitting
     } = this.state;
 
-    const img = {
-      id: "profile-picture-box",
-      alt: "Profile",
-      src: imagePreviewUrl
-    };
-
     return (
       <PictureForm
         onSubmit={handleSubmit(this.onSubmit)}
-        img={img}
+        img={{
+          id: "profile-picture-box",
+          alt: "Profile",
+          src: imagePreviewUrl
+        }}
         fileField={{
           placeholderText: "Upload Profile Picture",
           onChange: this.onChange

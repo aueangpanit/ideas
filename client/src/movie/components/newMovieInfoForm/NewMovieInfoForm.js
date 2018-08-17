@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Synopsis from "./Synopsis";
 import Poster from "./Poster";
 import PleaseLogin from "../../../pleaseLogin";
+import SomethingWentWrong from "./SomethingWentWrong";
 
 class NewMovieInfoForm extends Component {
   constructor(props) {
@@ -28,27 +29,44 @@ class NewMovieInfoForm extends Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, currentMovie } = this.props;
     const { page } = this.state;
 
-    if (auth) {
-      return (
+    if (!auth) {
+      return <PleaseLogin />;
+    }
+
+    if (!currentMovie) {
+      return <SomethingWentWrong />;
+    }
+
+    return (
+      <React.Fragment>
+        <div className="container">
+          <h4 className="red-text text-lighten-2">
+            {`${currentMovie.title} (${new Date(
+              currentMovie.releaseDate
+            ).getFullYear()})`}
+          </h4>
+        </div>
         <div>
           {page === 1 && <Synopsis onSubmit={this.nextPage} />}
           {page === 2 && <Poster previousPage={this.previousPage} />}
         </div>
-      );
-    }
-
-    return <PleaseLogin />;
+      </React.Fragment>
+    );
   }
 }
 
 const mapStateToProps = state => {
-  const { auth } = state;
+  const {
+    auth,
+    movie: { currentMovie }
+  } = state;
 
   return {
-    auth
+    auth,
+    currentMovie
   };
 };
 

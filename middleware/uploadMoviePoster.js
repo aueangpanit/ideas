@@ -30,15 +30,15 @@ module.exports = multer({
     },
     transforms: [
       {
-        id: "thumbnail",
+        id: "full-size",
         key: function(req, file, cb) {
-          cb(null, `profile_picture/${req.user.id}.png`);
+          cb(null, `movie/poster/742x1280/${req.params.id}.png`);
         },
         transform: function(req, file, cb) {
           cb(
             null,
             sharp()
-              .resize(100, 100)
+              .resize(742, 1280)
               .png()
           );
         }

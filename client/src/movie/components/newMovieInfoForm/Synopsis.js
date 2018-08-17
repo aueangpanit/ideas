@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { reduxForm, Field, formValueSelector } from "redux-form";
+import { reduxForm, formValueSelector } from "redux-form";
 
 import M from "materialize-css";
 
@@ -41,6 +41,7 @@ const mapStateToProps = state => {
 Synopsis = connect(mapStateToProps)(Synopsis);
 
 export default reduxForm({
+  validate,
   form: "newMovieInfoForm",
-  validate
+  destroyOnUnmount: false
 })(Synopsis);

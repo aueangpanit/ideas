@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Movie = mongoose.model("Movie");
 
 const requireLogin = require("../middleware/requireLogin");
+const requireMovieExist = require("../middleware/requireMovieExist");
+const uploadMoviePoster = require("../middleware/uploadMoviePoster");
 
 module.exports = app => {
   app.get("/api/movie/available/:title/:year", async (req, res) => {
@@ -21,7 +23,6 @@ module.exports = app => {
   });
 
   app.post("/api/movie/new", requireLogin, async (req, res) => {
-    console.log(req.body);
     const movie = await new Movie({
       title: req.body.title,
       releaseDate: req.body.releaseDate
@@ -29,4 +30,24 @@ module.exports = app => {
 
     res.send({ movie });
   });
+
+  app.post("/api/movie/update/info/:id", requireLogin, async (req, res) => {
+    const movie = await Movie.findByIdAndUpdate(req.params.id, {
+      synopsis: req.body.synopsis
+    });
+
+    res.send({ movie });
+  });
+
+  app.post(
+    "/api/movie/update/poster/:id",
+    requireLogin,
+    requireMovieExist,
+    uploadMoviePoster.single("poster"),
+    async (req, res) => {
+      const movie = await Movie.findById(req.params.id);
+
+      res.send({ movie });
+    }
+  );
 };

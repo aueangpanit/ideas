@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { reduxForm, getFormSyncErrors, getFormAsyncErrors } from "redux-form";
 import { connect } from "react-redux";
 
-import M from "materialize-css";
-
 import utils from "../../utils";
 
 import validate from "./validate";
@@ -12,10 +10,6 @@ import asyncValidate from "./asyncValidate";
 const { TextFormNoBackButton } = utils.form.components;
 
 class Username extends Component {
-  componentDidMount() {
-    M.updateTextFields();
-  }
-
   render() {
     const { handleSubmit, syncErrors, asyncErrors } = this.props;
 
