@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import utils from "../../utils";
 import config from "../../config";
-import CONTRIBUTE_DROPDOWN from "../data/contributeDropdownOptions";
+import ADD_DROPDOWN from "../data/addDropdownOptions";
 import DropdownTrigger from "./DropdownTrigger";
 
 const { LOGIN_DROPDOWN } = utils.auth.data;
@@ -17,11 +17,7 @@ class Navigation extends Component {
     return (
       <div>
         <li>
-          <DropdownTrigger
-            id={id}
-            content={CONTRIBUTE_DROPDOWN}
-            text="Contribute"
-          />
+          <DropdownTrigger id={id} content={ADD_DROPDOWN} text="Add" />
         </li>
         <li>
           <div

@@ -1,7 +1,7 @@
 import React from "react";
 
 import DropdownContent from "./DropdownContent";
-import CONTRIBUTE_DROPDOWN from "../data/contributeDropdownOptions";
+import ADD_DROPDOWN from "../data/addDropdownOptions";
 import utils from "../../utils";
 
 const { LOGIN_DROPDOWN } = utils.auth.data;
@@ -12,7 +12,7 @@ export default ({ auth, id }) => {
     return (
       <React.Fragment>
         <DropdownContent id={id} content={USER_DROPDOWN} />
-        <DropdownContent id={id} content={CONTRIBUTE_DROPDOWN} />
+        <DropdownContent id={id} content={ADD_DROPDOWN} />
       </React.Fragment>
     );
   }
